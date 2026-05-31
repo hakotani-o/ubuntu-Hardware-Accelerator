@@ -53,16 +53,16 @@ rm -rf $1
 mkdir $1
 chroot_dir=$1
 mem_size=`free --giga|grep Mem|awk '{print $2}'`
-if [ $mem_size -gt 15 ]; then
+if [ $mem_size -gt 6 ]; then
 	mount -t tmpfs -o size=10G tmpfs $chroot_dir
 fi
-rm -f wget-log* overlay/kernel_version
+rm -f wget-log* kernel_version
 
 #suite=plucky
 suite=resolute
 #Uri="https://mirror.hashy0917.net/ubuntu-ports/"
-Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
-#Uri="http://ports.ubuntu.com/ubuntu-ports"
+#Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
+Uri="http://ports.ubuntu.com/ubuntu-ports"
 	debootstrap --arch=arm64 $suite arm64 $Uri
 
 export DEBIAN_FRONTEND=noninteractive
@@ -82,7 +82,7 @@ echo "nameserver 8.8.4.4" >> $1/etc/resolv.conf
 rm $1/etc/hostname
 echo "ubuntu-desktop" > $1/etc/hostname
 {
-echo "Types: deb deb-src"
+echo "Types: deb"
 echo "URIs: $Uri"
 echo "Suites: $suite $suite-updates $suite-backports"
 echo "Components: main universe restricted multiverse"
@@ -104,9 +104,6 @@ setup_mountpoint $chroot_dir
 chroot $1 apt-get update
 chroot $1 apt-get -y upgrade
 chroot $1 apt-get -y dist-upgrade
-chroot $1 apt-get -y install apt-utils software-properties-common
-## mesa ppa ##chroot $1 add-apt-repository -y  ppa:kisak/kisak-mesa
-## mesa ppa ##chroot $1 apt update
 chroot $1 apt-get -y install ubuntu-desktop-minimal gdm3 linux-firmware snapd cloud-initramfs-growroot oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
 chroot $1 apt-get -y install  build-essential gcc-aarch64-linux-gnu bison \
 qemu-user-binfmt qemu-system-arm qemu-efi-aarch64 binfmt-support \
@@ -117,16 +114,14 @@ python3-pkg-resources swig libfdt-dev libpython3-dev gawk \
 git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex \
 libelf-dev bison sudo libgnutls28-dev
 
-# mesa
-#chroot $1 apt-get -y install flex bison python3-mako libwayland-egl-backend-dev libxcb-dri3-dev libxcb-dri2-0-dev libxcb-glx0-dev libx11-xcb-dev libxcb-present-dev libxcb-sync-dev libxxf86vm-dev libxshmfence-dev libxrandr-dev libwayland-dev libxdamage-dev libxext-dev libxfixes-dev x11proto-dri2-dev  x11proto-present-dev x11proto-gl-dev x11proto-xf86vidmode-dev libexpat1-dev libudev-dev gettext mesa-utils xutils-dev libpthread-stubs0-dev ninja-build bc flex bison cmake git valgrind python3-pip pkg-config zlib1g-dev wayland-protocols libxcb-shm0-dev meson llvm-21-dev libclang-cpp21-dev libclc-21-dev libllvmspirvlib-21-dev spirv-tools libopencl-clang-21-dev clang-21 libclang-21-dev llvm-spirv-21 libclang-common-21-dev libunwind-21-dev lm-sensors   liblua5.4-dev libglvnd-dev libxcb-keysyms1-dev libcairo2-dev libcunit1-dev libspirv-tools-dev spirv-headers
 # Mesa new part2
-#chroot $1 apt-get -y install bindgen cbindgen directx-headers-dev flatbuffers-compiler flatbuffers-compiler-dev glslang-tools libclang-21-dev libclang-common-21-dev libclang-cpp21 libclang-cpp21-dev libclang-dev libclang1-21 libclc-21 libclc-21-dev libdisplay-info-dev libdrm-dev libdrm-etnaviv1 libdrm-freedreno1 libdrm-nouveau2 libdrm-radeon1 libdrm-tegra0 libffi-dev libflatbuffers-dev libflatbuffers23.5.26 libgc1 libglvnd-core-dev libllvmspirvlib-21-dev libllvmspirvlib21.1 liblzma-dev libobjc-15-dev libobjc4 libpciaccess-dev libpfm4 libpkgconf7 libpng-dev librust-allocator-api2-dev librust-arbitrary-dev librust-bumpalo-dev librust-cfg-if-dev librust-critical-section-dev librust-crossbeam-deque-dev librust-crossbeam-epoch+std-dev librust-crossbeam-epoch-dev librust-crossbeam-utils-dev librust-derive-arbitrary-dev librust-either-dev librust-equivalent-dev librust-erased-serde-dev librust-foldhash-dev librust-getrandom-dev librust-hashbrown-dev librust-indexmap-dev librust-itoa-dev librust-js-sys-dev librust-libc-dev librust-log-dev librust-malloc-size-of-dev librust-memchr-dev librust-no-panic-dev librust-once-cell-dev librust-parking-lot-core-dev librust-paste-dev librust-portable-atomic-dev librust-ppv-lite86-dev librust-proc-macro2-dev librust-quote-dev librust-rand-chacha-dev librust-rand-core+getrandom-dev librust-rand-core+serde-dev librust-rand-core+std-dev librust-rand-core-dev librust-rand-dev librust-rayon-core-dev librust-rayon-dev librust-rustc-hash-2-dev librust-rustversion-dev librust-ryu-dev librust-serde-core-dev librust-serde-derive-dev librust-serde-dev librust-serde-fmt-dev librust-serde-json-dev librust-serde-test-dev librust-smallvec-dev librust-sval-buffer-dev librust-sval-derive-dev librust-sval-dev librust-sval-dynamic-dev librust-sval-fmt-dev librust-sval-ref-dev librust-sval-serde-dev librust-syn-dev librust-unicode-ident-dev librust-value-bag-dev librust-value-bag-serde1-dev librust-value-bag-sval2-dev librust-void-dev librust-wasm-bindgen-dev librust-wasm-bindgen-macro-dev librust-wasm-bindgen-macro-support-dev librust-wasm-bindgen-shared-dev librust-zerocopy-derive-dev librust-zerocopy-dev libsensors-dev libset-scalar-perl libstd-rust-1.93 libstd-rust-1.93-dev libva-dev libva-glx2 libva-wayland2 libva-x11-2 libvulkan-dev libwayland-bin libwayland-dev libwayland-egl-backend-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-dri2-0 libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb1-dev libxdmcp-dev libxext-dev libxml2-dev libxrandr-dev libxrender-dev libxshmfence-dev libxtensor-dev libxxf86vm-dev llvm-21 llvm-21-dev llvm-21-linker-tools llvm-21-runtime llvm-21-tools llvm-spirv-21 meson ninja-build nlohmann-json3-dev pkgconf pkgconf-bin python3-mako python3-pycparser rustc rustc-1.93 rustfmt rustfmt-1.93 spirv-tools spirv-tools-dev spirv-tools-headers valgrind wayland-protocols x11proto-dev xorg-sgml-doctools xtl-dev xtrans-dev
+chroot $1 apt-get -y install bindgen cbindgen directx-headers-dev flatbuffers-compiler flatbuffers-compiler-dev glslang-tools libclang-21-dev libclang-common-21-dev libclang-cpp21 libclang-cpp21-dev libclang-dev libclang1-21 libclc-21 libclc-21-dev libdisplay-info-dev libdrm-dev libdrm-etnaviv1 libdrm-freedreno1 libdrm-nouveau2 libdrm-radeon1 libdrm-tegra0 libffi-dev libflatbuffers-dev libflatbuffers23.5.26 libgc1 libglvnd-core-dev libllvmspirvlib-21-dev libllvmspirvlib21.1 liblzma-dev libobjc-15-dev libobjc4 libpciaccess-dev libpfm4 libpkgconf7 libpng-dev librust-allocator-api2-dev librust-arbitrary-dev librust-bumpalo-dev librust-cfg-if-dev librust-critical-section-dev librust-crossbeam-deque-dev librust-crossbeam-epoch+std-dev librust-crossbeam-epoch-dev librust-crossbeam-utils-dev librust-derive-arbitrary-dev librust-either-dev librust-equivalent-dev librust-erased-serde-dev librust-foldhash-dev librust-getrandom-dev librust-hashbrown-dev librust-indexmap-dev librust-itoa-dev librust-js-sys-dev librust-libc-dev librust-log-dev librust-malloc-size-of-dev librust-memchr-dev librust-no-panic-dev librust-once-cell-dev librust-parking-lot-core-dev librust-paste-dev librust-portable-atomic-dev librust-ppv-lite86-dev librust-proc-macro2-dev librust-quote-dev librust-rand-chacha-dev librust-rand-core+getrandom-dev librust-rand-core+serde-dev librust-rand-core+std-dev librust-rand-core-dev librust-rand-dev librust-rayon-core-dev librust-rayon-dev librust-rustc-hash-2-dev librust-rustversion-dev librust-ryu-dev librust-serde-core-dev librust-serde-derive-dev librust-serde-dev librust-serde-fmt-dev librust-serde-json-dev librust-serde-test-dev librust-smallvec-dev librust-sval-buffer-dev librust-sval-derive-dev librust-sval-dev librust-sval-dynamic-dev librust-sval-fmt-dev librust-sval-ref-dev librust-sval-serde-dev librust-syn-dev librust-unicode-ident-dev librust-value-bag-dev librust-value-bag-serde1-dev librust-value-bag-sval2-dev librust-void-dev librust-wasm-bindgen-dev librust-wasm-bindgen-macro-dev librust-wasm-bindgen-macro-support-dev librust-wasm-bindgen-shared-dev librust-zerocopy-derive-dev librust-zerocopy-dev libsensors-dev libset-scalar-perl libstd-rust-1.93 libstd-rust-1.93-dev libva-dev libva-glx2 libva-wayland2 libva-x11-2 libvulkan-dev libwayland-bin libwayland-dev libwayland-egl-backend-dev libx11-dev libx11-xcb-dev libxau-dev libxcb-dri2-0 libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb1-dev libxdmcp-dev libxext-dev libxml2-dev libxrandr-dev libxrender-dev libxshmfence-dev libxtensor-dev libxxf86vm-dev llvm-21 llvm-21-dev llvm-21-linker-tools llvm-21-runtime llvm-21-tools llvm-spirv-21 meson ninja-build nlohmann-json3-dev pkgconf pkgconf-bin python3-mako python3-pycparser rustc rustc-1.93 rustfmt rustfmt-1.93 spirv-tools spirv-tools-dev spirv-tools-headers valgrind wayland-protocols x11proto-dev xorg-sgml-doctools xtl-dev xtrans-dev
 
 # Mesa new part1
-echo "--------------- build-dep -y mesa start ---------------------"
+#echo "--------------- build-dep -y mesa start ---------------------"
 # set echo "Types: deb deb-src" to ubuntu.sources
-chroot $1 apt-get build-dep -y mesa
-echo "--------------- build-dep -y mesa end  ----------------------"
+#chroot $1 apt-get build-dep -y mesa
+#echo "--------------- build-dep -y mesa end  ----------------------"
 
 chroot $1 apt-get -y purge cloud-init flash-kernel fwupd nano grub-efi-arm64
 
@@ -135,7 +130,7 @@ chroot $1 apt-get -y upgrade
 
 systemctl stop apparmor
 
-sed -i 's/#EXTRA_GROUPS=.*/EXTRA_GROUPS="video"/g' $1/etc/adduser.conf
+sed -i 's/#EXTRA_GROUPS=.*/EXTRA_GROUPS="video render"/g' $1/etc/adduser.conf
 sed -i 's/#ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/g' $1/etc/adduser.conf
 
 # kernel
@@ -146,7 +141,6 @@ chroot $1 /bin/bash -c "cd kkk && dpkg -i *.deb"
 # mesa
 mkdir $1/bbb
 chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 https://gitlab.freedesktop.org/mesa/libdrm && cd libdrm/ && mkdir build && cd build/ && meson && ninja install"
-#chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/25.3 https://gitlab.freedesktop.org/mesa/mesa.git && cd mesa && mkdir build && cd build && meson -Dvulkan-drivers=panfrost -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panfrost && ninja install && echo /opt/panfrost/lib/aarch64-linux-gnu | tee /etc/ld.so.conf.d/0-panfrost.conf && echo 'VK_DRIVER_FILES="/opt/panfrost/share/vulkan/icd.d/panfrost_icd.aarch64.json"' >> /etc/environment"
 
 # Mesaの仕入れとビルド（Panthor最適化版）
 chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/25.3 https://gitlab.freedesktop.org/mesa/mesa.git && cd mesa && mkdir build && cd build && meson setup .. -Dvulkan-drivers=panfrost -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panthor && ninja install"
@@ -206,8 +200,8 @@ teardown_mountpoint $chroot_dir
 rm -f wget-log*
 rm -f $1/boot/*.old
 #tar the rootfs
-rootfs="overlay/ubuntu-mainline.rootfs.tar"
-echo "rootfs=$rootfs" > overlay/rootfs
+rootfs="ubuntu-mainline.rootfs.tar"
+echo "rootfs=$rootfs" > rootfs
 cd $1
 rm -rf ../$rootfs
 sync
@@ -217,7 +211,7 @@ echo "DISK usage"
 df $1  
 # Exit trap is no longer needed
 trap '' EXIT
-if [ $mem_size -gt 15 ]; then
+if [ $mem_size -gt 6 ]; then
 	umount $1
 	sleep 2
 fi
