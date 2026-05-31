@@ -228,7 +228,7 @@ CONFIG_AUDIT=y
 
 
 ##### if need MEDIA SUPPORT then change y #####
-CONFIG_MEDIA_SUPPORT=n
+CONFIG_MEDIA_SUPPORT=y
 CONFIG_DVB_NET=n
 
 ##### if need IPV6 then change y #####
