@@ -47,10 +47,10 @@ customization:
     - name: "apparmor"
     - name: "apparmor-utils"
     - name: "apparmor-profiles"
-  extra-snaps:
-    - name: snapd
-    - name: core24
-    - name: mesa-2404
+#  extra-snaps:
+#    - name: snapd
+#    - name: core24
+#    - name: mesa-2404
 #    - name: bare
 #    - name: core22
 #    - name: core24
