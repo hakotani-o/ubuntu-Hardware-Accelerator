@@ -169,7 +169,7 @@ rm -rf $1/aaa $1/bbb $1/kkk
 kernel_version="`ls -1 $1/boot/vmlinu?-*|sed 's#-# #' | awk '{ print $2 }'`"
 echo "kernel_version=$kernel_version" > kernel_version
 # install U-Boot
-chroot $1 apt-get -y install u-boot-tools u-boot-menu snapd
+chroot $1 apt-get -y install u-boot-tools u-boot-menu
 
 # Default kernel command line arguments
 echo -n "rootwait rw console=ttyS2,1500000 console=tty1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory" > $1/etc/kernel/cmdline
