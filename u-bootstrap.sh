@@ -166,7 +166,7 @@ chmod +x /etc/profile.d/rockchip-panthor.sh"
 
 rm -rf $1/aaa $1/bbb $1/kkk
 kernel_version="`ls -1 $1/boot/vmlinu?-*|sed 's#-# #' | awk '{ print $2 }'`"
-echo "kernel_version=$kernel_version" > overlay/kernel_version
+echo "kernel_version=$kernel_version" > kernel_version
 # install U-Boot
 chroot $1 apt-get -y install u-boot-tools u-boot-menu
 
