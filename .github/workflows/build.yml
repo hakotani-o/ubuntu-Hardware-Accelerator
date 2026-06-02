@@ -34,7 +34,7 @@ jobs:
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu.rootfs.tar
+          name: ubuntu.rootfs.tar.gz
           path: . # 作成されたファイルのパスを指定
 
 
