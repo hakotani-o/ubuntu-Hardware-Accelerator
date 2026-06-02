@@ -207,7 +207,7 @@ echo "rootfs=$rootfs" > rootfs
 cd $1
 rm -rf ../$rootfs
 sync
-tar -cf ../$rootfs --xattrs ./*
+tar -zcf ../$rootfs --xattrs ./*
 cd ..
 echo "DISK usage"
 df $1  
