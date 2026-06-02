@@ -51,7 +51,7 @@ fi
 . ./kernel_version
 
 rootfs="$(readlink -f "$rootfs")"
-if [[ "$(basename "${rootfs}")" != *".rootfs.tar" || ! -e "${rootfs}" ]]; then
+if [[ "$(basename "${rootfs}")" != *".rootfs.tar.gz" || ! -e "${rootfs}" ]]; then
     echo "Error: $(basename "${rootfs}") must be a rootfs tarfile"
     exit 1
 fi
