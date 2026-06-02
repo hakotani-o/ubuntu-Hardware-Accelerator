@@ -123,6 +123,8 @@ chroot $1 apt-get -y install bindgen cbindgen directx-headers-dev flatbuffers-co
 #chroot $1 apt-get build-dep -y mesa
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
+chroot $1 /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
+
 chroot $1 apt-get -y purge cloud-init flash-kernel fwupd nano grub-efi-arm64
 
 chroot $1 apt-get update
@@ -163,7 +165,6 @@ export CHROMIUM_FLAGS=\"--enable-features=UseOzonePlatform --ozone-platform=wayl
 EOF
 chmod +x /etc/profile.d/rockchip-panthor.sh"
 
-chroot $1 /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
 
 rm -rf $1/aaa $1/bbb $1/kkk
 kernel_version="`ls -1 $1/boot/vmlinu?-*|sed 's#-# #' | awk '{ print $2 }'`"
