@@ -163,7 +163,7 @@ export CHROMIUM_FLAGS=\"--enable-features=UseOzonePlatform --ozone-platform=wayl
 EOF
 chmod +x /etc/profile.d/rockchip-panthor.sh"
 
-chroot $1 /bin/bash -c "apt-get update && apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
+chroot $1 /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
 
 rm -rf $1/aaa $1/bbb $1/kkk
 kernel_version="`ls -1 $1/boot/vmlinu?-*|sed 's#-# #' | awk '{ print $2 }'`"
