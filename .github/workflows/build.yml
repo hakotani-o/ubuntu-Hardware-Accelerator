@@ -63,7 +63,7 @@ jobs:
       - name: Download rootfs artifact
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu.rootfs.tar
+          name: ubuntu.rootfs.tar.gz
           path: ./
 
       - name: disk image
