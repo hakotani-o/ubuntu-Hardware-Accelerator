@@ -202,12 +202,12 @@ teardown_mountpoint $chroot_dir
 rm -f wget-log*
 rm -f $1/boot/*.old
 #tar the rootfs
-rootfs="ubuntu.rootfs.tar"
+rootfs="ubuntu.rootfs.tar.gz"
 echo "rootfs=$rootfs" > rootfs
 cd $1
 rm -rf ../$rootfs
 sync
-tar -zcf ../$rootfs --xattrs ./*
+tar -zcf ../$rootfs --xattrs --xattrs-include='*' ./*
 cd ..
 echo "DISK usage"
 df $1  
