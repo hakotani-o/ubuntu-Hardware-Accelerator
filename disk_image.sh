@@ -117,7 +117,7 @@ mkdir -p ${mount_point}
 
 
 # Copy the rootfs to root partition
-tar -xpf "${rootfs}" -C ${mount_point}/writable
+tar -zxpf "${rootfs}" -C ${mount_point}/writable
 
 fdt_name="rockchip/$3.dtb"
 dtbs_install_path="/usr/lib/linux-image-"
