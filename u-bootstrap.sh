@@ -131,7 +131,7 @@ libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-
 #chroot $1 apt-get build-dep -y mesa
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
-#chroot $1 /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
+chroot $1 /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
 
 chroot $1 apt-get -y purge cloud-init flash-kernel fwupd nano grub-efi-arm64
 
