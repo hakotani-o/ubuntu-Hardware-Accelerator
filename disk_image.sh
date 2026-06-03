@@ -60,7 +60,7 @@ mkdir -p images
 now=`date +%F`
 # Create an empty disk image
 img="./Ubuntu-${kernel_version}-$2-$now.img"
-size="$(( $(wc -c < "${rootfs}" ) / 1024 / 1024 ))"
+size="$(( $(gzip -l "${rootfs}" ) / 1024 / 1024 ))"
 truncate -s "$(( size + 512 ))M" "${img}"
 
 # Create loop device for disk image
