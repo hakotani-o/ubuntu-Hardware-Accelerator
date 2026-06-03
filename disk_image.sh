@@ -56,11 +56,10 @@ if [[ "$(basename "${rootfs}")" != *".rootfs.tar.gz" || ! -e "${rootfs}" ]]; the
     exit 1
 fi
 
-mkdir -p images
 now=`date +%F`
 # Create an empty disk image
 img="./Ubuntu-${kernel_version}-$2-$now.img"
-size="$(( $(gzip -l "${rootfs}" ) / 1024 / 1024 ))"
+size="$(( $(gzip -l "${rootfs}" | awk 'NR==2 {print $2}')   / 1024 / 1024 ))"
 truncate -s "$(( size + 512 ))M" "${img}"
 
 # Create loop device for disk image
