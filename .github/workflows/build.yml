@@ -68,8 +68,12 @@ jobs:
 
       - name: disk image
         run: |
+          # GitHubのホスト環境とchroot(25.10)のセキュリティ不整合を回避する環境変数を付与
+          export SYSTEMD_SECCOMP=0    
+          # 確実に特権(完全なroot)として、環境変数を維持したまま実行
+          sudo --preserve-env=SYSTEMD_SECCOMP ./disk_image.sh arm64 ${{ matrix.model }} ${{ matrix.dtb }}
           chmod +x disk_image.sh
-          sudo ./disk_image.sh arm64 ${{ matrix.model }} ${{ matrix.dtb }}
+#          sudo ./disk_image.sh arm64 ${{ matrix.model }} ${{ matrix.dtb }}
 
       - name: Rename files to avoid conflict
         run: |
