@@ -138,7 +138,7 @@ chroot $1 apt-get -y purge cloud-init flash-kernel fwupd nano grub-efi-arm64
 chroot $1 apt-get update
 chroot $1 apt-get -y upgrade
 
-systemctl stop apparmor
+# systemctl stop apparmor
 
 sed -i 's/#EXTRA_GROUPS=.*/EXTRA_GROUPS="video"/g' $1/etc/adduser.conf
 sed -i 's/#ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/g' $1/etc/adduser.conf
