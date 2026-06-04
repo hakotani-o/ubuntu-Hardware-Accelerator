@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
     # 1. リポジトリのコード（BASHスクリプト含む）をチェックアウト
-      - name: Checkout repository
+      
       - uses: actions/checkout@v4
 
     # 2. ローカルと共通のBASHスクリプトを実行
