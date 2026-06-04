@@ -14,8 +14,8 @@ rootfs:
     - restricted
     - universe
     - multiverse
-  mirror: "http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
-#  mirror: "http://ports.ubuntu.com/ubuntu-ports/"
+#  mirror: "http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
+  mirror: "http://ports.ubuntu.com/ubuntu-ports/"
   pocket: updates
   seed:
     urls:
