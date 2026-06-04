@@ -120,4 +120,4 @@ rm -rf build/chroot/bbb
 		umount build
 		sleep 2
 	fi  
-	exit 0
+
