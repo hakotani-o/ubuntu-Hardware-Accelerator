@@ -4,12 +4,16 @@ set -x
 
 echo "=== 1. 最小限のビルドツールのインストール ==="
 sudo apt update
-sudo apt install -y build-essential devscripts debhelper meson ninja-build \
+sudo apt install -y build-essential devscripts debhelper ninja-build \
     pkg-config python3-mako libdrm-dev libwayland-dev wayland-protocols \
     libx11-dev libxext-dev libxdamage-dev libxfixes-dev libxcb-glx0-dev \
     libxcb-shm0-dev libxcb-dri2-0-dev libxcb-dri3-dev libxshmfence-dev \
     libxrandr-dev libxxf86vm-dev libexpat1-dev libzstd-dev zlib1g-dev \
-    python3-ply python3-yaml
+    python3-ply python3-yaml python3-pip python3-setuptools
+
+# 2. apt版の古いmesonが入っていれば削除し、pipで最新版のmesonをシステムに導入します
+sudo apt-get remove -y meson
+sudo python3 -m pip install --break-system-packages --upgrade meson
 
 echo "=== 2. ソースパッケージリポジトリの有効化とソース取得 ==="
 # Ubuntu 24.04の新しい形式と従来の形式の両方に対応
