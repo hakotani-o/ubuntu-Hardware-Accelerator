@@ -46,7 +46,7 @@ if [ -d "src/vulkan/drivers/panvk" ]; then
 else
     VULKAN_DRIVER_NAME="panfrost"
 fi
-sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN_DRIVER_NAME},swrast \\/" debian/rules
+sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN_DRIVER_NAME},swrast/" debian/rules
 
 # LLVMを必須とする他のドライバー（iris, radeonsi等）を無効化したため、LLVM依存設定自体をオフにする
 sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
@@ -66,7 +66,8 @@ cd ..
 echo "以下のディレクトリにPanthor専用の .deb パッケージが生成されました:"
 pwd
 ls -l *.deb
-
+cp *.deb ..
+cd ..
 echo "--------------------------------------------------"
 echo "インストールする場合は、以下のコマンドを実行してください："
 echo "cd $(pwd) && sudo dpkg -i *.deb"
