@@ -7,8 +7,8 @@ export LANG=C
 	 rm -rf build && mkdir build
 
 	mem_size=`free --giga|grep Mem|awk '{print $2}'`
-	if [ $mem_size -gt 7 ]; then
-		 mount -t tmpfs -o size=7G tmpfs build
+	if [ $mem_size -gt 10 ]; then
+		 mount -t tmpfs -o size=10G tmpfs build
 	fi
 
 	 apt-get update
@@ -69,7 +69,7 @@ teardown_mountpoint() {
 
 	cd build/chroot &&  tar -zcf ../../$rootfs --xattrs ./*
 	cd ../..
-	if [ $mem_size -gt 7 ]; then
+	if [ $mem_size -gt 10 ]; then
 		umount build
 		sleep 2
 	fi  
