@@ -60,8 +60,13 @@ sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe/' 
 sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/g' debian/rules
 sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/g' debian/rules
 # vdpauファイルが存在しない場合に mv コマンドでエラーになるのを防ぐパッチ
-sed -i 's/mv debian\/tmp\/usr\/lib\/\*\/vdpau/if [ -d debian\/tmp\/usr\/lib\/\*\/vdpau ]; then mv debian\/tmp\/usr\/lib\/\*\/vdpau/g' debian/rules
-sed -i 's/libvdpau\*.so\*/libvdpau\*.so\*; fi/g' debian/rules
+#sed -i 's/mv debian\/tmp\/usr\/lib\/\*\/vdpau/if [ -d debian\/tmp\/usr\/lib\/\*\/vdpau ]; then mv debian\/tmp\/usr\/lib\/\*\/vdpau/g' debian/rules
+#sed -i 's/libvdpau\*.so\*/libvdpau\*.so\*; fi/g' debian/rules
+echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+# (前略：rm -f の2行は残したままでOKです)
+# 【★前回のvdpauの2行を消して、この1行に差し替えます★】
+# vdpauを移動させようとする処理（連続する3行）を、先頭に「#」をつけて丸ごと無効化します
+sed -i '/install -m755 -d debian\/mesa-vdpau-drivers/,/debian\/mesa-vdpau-drivers\/usr\/lib/ s/^/#/' debian/rules
 
 
 
