@@ -15,6 +15,10 @@ sudo apt install -y build-essential devscripts debhelper ninja-build \
 sudo apt-get remove -y meson
 sudo python3 -m pip install --break-system-packages --upgrade meson
 
+# 【★ここを追加★】debuildが認識できる場所にシンボリックリンクを作成します
+sudo ln -sf /usr/local/bin/meson /usr/bin/meson
+
+
 echo "=== 2. ソースパッケージリポジトリの有効化とソース取得 ==="
 # Ubuntu 24.04の新しい形式と従来の形式の両方に対応
 if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
