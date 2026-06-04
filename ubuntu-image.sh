@@ -7,8 +7,8 @@ export LANG=C
 	 rm -rf build && mkdir build
 
 	mem_size=`free --giga|grep Mem|awk '{print $2}'`
-	if [ $mem_size -gt 10 ]; then
-		 mount -t tmpfs -o size=10G tmpfs build
+	if [ $mem_size -gt 16 ]; then
+		 mount -t tmpfs -o size=16G tmpfs build
 	fi
 
 	 apt-get update
@@ -116,7 +116,7 @@ rm -rf build/chroot/bbb
 
 	cd build/chroot &&  tar -zcf ../../$rootfs --xattrs ./*
 	cd ../..
-	if [ $mem_size -gt 10 ]; then
+	if [ $mem_size -gt 16 ]; then
 		umount build
 		sleep 2
 	fi  
