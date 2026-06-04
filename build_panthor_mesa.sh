@@ -76,6 +76,11 @@ truncate -s 0 debian/mesa-opencl-icd.install
 # Vulkanパッケージの指示書から、生成されなかったレイヤーファイルの記述を削除します
 sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
 sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
+# 【★今回新しく追加する1行★】
+# Vulkanパッケージの指示書から、explicit_layer の記述も削除します
+sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
+
+
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
 # ※Mesaのバージョンにより指定名が panfrost か panvk か異なるため、ソースフォルダ名から自動判定
