@@ -53,9 +53,10 @@ sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
 # バージョン末尾に「~panthor1」を自動付与
+CURRENT_VERSION=$(dpkg-parsechangelog -S Version)
 export DEBEMAIL="user@localhost"
 export DEBFULLNAME="Panthor Builder"
-debchange --v "echo \$(dpkg-parsechangelog -S Version)~panthor1" "Custom Panthor-only build without heavy dependencies"
+debchange --newversion "${CURRENT_VERSION}~panthor1" "Custom Panthor-only build without heavy dependencies"
 
 echo "=== 5. 依存チェックを無視してビルド実行 ==="
 # -d フラグで不要なビルド依存（Intel/AMD用ライブラリなど）のチェックをスキップ
