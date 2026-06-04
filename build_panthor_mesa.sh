@@ -56,7 +56,7 @@ echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ===
 CURRENT_VERSION=$(dpkg-parsechangelog -S Version)
 export DEBEMAIL="user@localhost"
 export DEBFULLNAME="Panthor Builder"
-debchange --newversion "${CURRENT_VERSION}~panthor1" "Custom Panthor-only build without heavy dependencies"
+debchange　 --force-bad-version  --newversion "${CURRENT_VERSION}~panthor1" "Custom Panthor-only build without heavy dependencies"
 
 echo "=== 5. 依存チェックを無視してビルド実行 ==="
 # -d フラグで不要なビルド依存（Intel/AMD用ライブラリなど）のチェックをスキップ
