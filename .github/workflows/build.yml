@@ -27,8 +27,8 @@ jobs:
 
       - name: Build rootfs tarball
         run: |
-          chmod +x u-bootstrap.sh
-          sudo ./u-bootstrap.sh arm64
+          chmod +x ubuntu-image.sh
+          sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
 
       - name: Upload rootfs artifact
