@@ -65,7 +65,8 @@ chroot build/chroot apt-get -y install build-essential meson ninja-build pkgconf
   libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev libxshmfence-dev libxxf86vm-dev \
   libwayland-dev libwayland-bin libwayland-egl-backend-dev wayland-protocols \
   libglvnd-core-dev libvulkan-dev glslang-tools spirv-tools spirv-tools-dev \
-libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-dev
+libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-dev \
+git
 chroot build/chroot /bin/bash -c "apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils"
 # mesa
 mkdir build/chroot/bbb
