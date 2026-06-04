@@ -54,9 +54,9 @@ teardown_mountpoint() {
         umount "$submount"
     done
 }
-mount --bind /dev  "build/chroot/root/dev"
-mount --bind /proc "build/chroot/root/proc"
-mount --bind /sys  "build/chroot/root/sys"
+mount --bind /dev  "build/chroot/dev"
+mount --bind /proc "build/chroot/proc"
+mount --bind /sys  "build/chroot/sys"
 # Mesa new part3
 chroot build/chroot apt-get -y install build-essential meson ninja-build pkgconf pkgconf-bin python3-mako \
   libdrm-dev libpciaccess-dev libffi-dev libsensors-dev libxml2-dev \
@@ -95,9 +95,9 @@ export CHROMIUM_FLAGS=\"--enable-features=UseOzonePlatform --ozone-platform=wayl
 EOF
 chmod +x /etc/profile.d/rockchip-panthor.sh"
 
-umount "build/chroot/root/sys"
-umount "build/chroot/root/proc"
-umount "build/chroot/root/dev"
+umount "build/chroot/sys"
+umount "build/chroot/proc"
+umount "build/chroot/dev"
 rm -rf build/chroot/bbb
 
 
