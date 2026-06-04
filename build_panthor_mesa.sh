@@ -59,7 +59,9 @@ sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe/' 
 # 存在しないファイルでエラーになるのを防ぐため、rm に -f フラグを追加する
 sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/g' debian/rules
 sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/g' debian/rules
-
+# vdpauファイルが存在しない場合に mv コマンドでエラーになるのを防ぐパッチ
+sed -i 's/mv debian\/tmp\/usr\/lib\/\*\/vdpau/if [ -d debian\/tmp\/usr\/lib\/\*\/vdpau ]; then mv debian\/tmp\/usr\/lib\/\*\/vdpau/g' debian/rules
+sed -i 's/libvdpau\*.so\*/libvdpau\*.so\*; fi/g' debian/rules
 
 
 
