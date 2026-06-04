@@ -37,7 +37,7 @@ cd "$MESA_SRC_DIR"
 
 echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # gallium-drivers の行を置換 (panfrost,kmsro,zink,softpipe のみに制限)
-sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost/' debian/rules
+sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe/' debian/rules
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
 # ※Mesaのバージョンにより指定名が panfrost か panvk か異なるため、ソースフォルダ名から自動判定
