@@ -67,7 +67,9 @@ echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 【★前回のvdpauの2行を消して、この1行に差し替えます★】
 # vdpauを移動させようとする処理（連続する3行）を、先頭に「#」をつけて丸ごと無効化します
 sed -i '/install -m755 -d debian\/mesa-vdpau-drivers/,/debian\/mesa-vdpau-drivers\/usr\/lib/ s/^/#/' debian/rules
-
+# 【★今回新しく追加する1行★】
+# _drv_video.soを移動させようとする処理（連続する2行）を、先頭に「#」をつけて無効化します
+sed -i '/install -m755 -d debian\/mesa-va-drivers/,/debian\/mesa-va-drivers\/usr\/lib/ s/^/#/' debian/rules
 
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
