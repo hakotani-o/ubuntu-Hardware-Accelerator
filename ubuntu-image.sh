@@ -17,7 +17,7 @@ export LANG=C
 #	 snap install --channel=latest/edge --classic ubuntu-image
 	 ubuntu-image --debug --workdir build classic image-definition.yaml
 
-	 rm -rf build/root
+#	 rm -rf build/root
 	 chmod +x setup-script.sh
 	 cp setup-script.sh build/chroot/
 
