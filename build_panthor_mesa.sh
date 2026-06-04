@@ -22,7 +22,7 @@ else
     sudo sed -i 's/^#\s*deb-src/deb-src/' /etc/apt/sources.list
     cat /etc/apt/sources.list
 fi
-
+sudo apt update
 
 # 作業ディレクトリの作成
 WORK_DIR="$HOME/panthor-mesa-build"
