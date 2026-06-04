@@ -11,7 +11,8 @@ sudo apt install -y build-essential devscripts debhelper ninja-build \
     libxrandr-dev libxxf86vm-dev libexpat1-dev libzstd-dev zlib1g-dev \
     python3-ply python3-yaml python3-pip python3-setuptools glslang-tools \
     spirv-tools libclc-20-dev llvm-20-dev libclang-cpp20-dev \
-    libllvmspirvlib-20-dev libclang-20-dev libwayland-egl-backend-dev
+    libllvmspirvlib-20-dev libclang-20-dev libwayland-egl-backend-dev \
+    libxcb-randr0-dev
 
 # 2. apt版の古いmesonが入っていれば削除し、pipで最新版のmesonをシステムに導入します
 sudo apt-get remove -y meson
