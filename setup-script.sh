@@ -9,14 +9,14 @@ set -x
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
 # Mesa new part3
-apt-get -y install build-essential meson ninja-build pkgconf pkgconf-bin python3-mako \
+apt-get update && apt-get -y install build-essential meson ninja-build pkgconf pkgconf-bin python3-mako \
   libdrm-dev libpciaccess-dev libffi-dev libsensors-dev libxml2-dev \
   libx11-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev \
   libxcb-present-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev \
   libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev libxshmfence-dev libxxf86vm-dev \
   libwayland-dev libwayland-bin libwayland-egl-backend-dev wayland-protocols \
   libglvnd-core-dev libvulkan-dev glslang-tools spirv-tools spirv-tools-dev \
-libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-dev
+libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-dev git
  
 apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils
 
