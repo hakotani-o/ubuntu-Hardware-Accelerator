@@ -27,7 +27,7 @@ jobs:
 
       - name: Build rootfs tarball
         run: |
-          chmod +x ubuntu-image.sh setup-script.sh
+          chmod +x ubuntu-image.sh
           sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
 
