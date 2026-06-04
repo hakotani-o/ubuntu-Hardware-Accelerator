@@ -21,6 +21,7 @@ EOF
 	ssh-keygen -A
 
 	dpkg -i kernel/*
+	apt-get install -f -y
 	cd / && rm -rf kernel
 	apt-get -y purge cloud-init flash-kernel fwupd ufw grub-efi-arm64
 	apt-get -y autoremove
