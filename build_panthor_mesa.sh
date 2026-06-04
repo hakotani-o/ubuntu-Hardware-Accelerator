@@ -17,7 +17,7 @@ sudo apt install -y build-essential devscripts debhelper ninja-build \
   libxcb-present-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev \
   libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev libxshmfence-dev libxxf86vm-dev \
   libwayland-dev libwayland-bin libwayland-egl-backend-dev wayland-protocols \
-  libglvnd-core-dev libvulkan-dev glslang-tools spirv-tools 
+  libglvnd-core-dev libvulkan-dev glslang-tools spirv-tools python3-pycparser
 
 
 # 2. apt版の古いmesonが入っていれば削除し、pipで最新版のmesonをシステムに導入します
