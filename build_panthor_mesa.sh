@@ -71,6 +71,7 @@ sed -i '/install -m755 -d debian\/mesa-vdpau-drivers/,/debian\/mesa-vdpau-driver
 # _drv_video.soを移動させようとする処理（連続する2行）を、先頭に「#」をつけて無効化します
 sed -i '/install -m755 -d debian\/mesa-va-drivers/,/debian\/mesa-va-drivers\/usr\/lib/ s/^/#/' debian/rules
 truncate -s 0 debian/mesa-drm-shim.install
+truncate -s 0 debian/mesa-opencl-icd.install
 
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
