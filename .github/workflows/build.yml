@@ -14,8 +14,25 @@ jobs:
     
     runs-on: ubuntu-24.04-arm
     steps:
-  
+    # 1. リポジトリのコード（BASHスクリプト含む）をチェックアウト
+      - name: Checkout repository
       - uses: actions/checkout@v4
+
+    # 2. ローカルと共通のBASHスクリプトを実行
+      - name: Run local build script
+        run: |
+          chmod +x ./build_panthor_mesa.sh
+          ./build_panthor_mesa.sh
+
+    # 3. 生成された .deb パッケージを GitHub にアップロード（保存）
+      - name: Upload .deb packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: mesa-panthor-debs
+          path: |
+             ./*.deb
+             ../*.deb
+
  
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
