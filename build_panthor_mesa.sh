@@ -82,6 +82,13 @@ sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
 # 【★今回新しく追加する1行★】
 # Vulkanパッケージの指示書から、AMD用の設定ファイルの記述を削除します
 sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
+# 指示書から不要なファイルを確実に削除する4行（ここが揃っていればOKです）
+sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
+sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
+sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
+sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
+
+
 
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
