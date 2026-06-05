@@ -10,7 +10,7 @@ export LANG=C
 	if [ $mem_size -gt 16 ]; then
 		 mount -t tmpfs -o size=16G tmpfs build
 	fi
-
+df
 	 apt-get update
 	 apt-get -y install git snapd qemu-user-static ubuntu-dev-tools
 	 snap install --classic ubuntu-image
