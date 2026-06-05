@@ -2,6 +2,17 @@
 set -e # エラーが発生したらその時点で停止
 set -x
 
+# 作業ディレクトリの作成
+WORK_DIR="panthor-mesa-build"
+rm -rf "$WORK_DIR"
+mkdir -p "$WORK_DIR"
+	mem_size=`free --giga|grep Mem|awk '{print $2}'`
+	if [ $mem_size -gt 10 ]; then
+		 mount -t tmpfs -o size=10G tmpfs $WORK_DIR
+	fi
+cd "$WORK_DIR"
+df
+
 echo "=== 1. 最小限のビルドツールのインストール ==="
 sudo apt update
 sudo apt install -y build-essential devscripts debhelper ninja-build \
@@ -41,16 +52,7 @@ else
 fi
 sudo apt update
 
-# 作業ディレクトリの作成
-WORK_DIR="panthor-mesa-build"
-rm -rf "$WORK_DIR"
-mkdir -p "$WORK_DIR"
-	mem_size=`free --giga|grep Mem|awk '{print $2}'`
-	if [ $mem_size -gt 10 ]; then
-		 mount -t tmpfs -o size=10G tmpfs $WORK_DIR
-	fi
-cd "$WORK_DIR"
-df
+
 # ソースのダウンロード
 apt source mesa
 MESA_SRC_DIR=$(ls -d mesa-*)
