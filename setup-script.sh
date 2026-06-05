@@ -19,7 +19,9 @@ EOF
 	touch /var/log/syslog
 	chown syslog:adm /var/log/syslog
 	ssh-keygen -A
-
+	echo "---------------------------------------------------"
+    ls -l kernel
+	echo "---------------------------------------------------"
 	dpkg -i kernel/*
 	apt-get install -f -y
 	cd / && rm -rf kernel
