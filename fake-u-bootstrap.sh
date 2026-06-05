@@ -122,7 +122,15 @@ libelf-dev bison sudo libgnutls28-dev
 #chroot $1 apt-get build-dep -y mesa
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
-
+chmod +x ./build_panthor_mesa.sh
+cp ./build_panthor_mesa.sh $1
+chroot $1 ./build_panthor_mesa.sh
+cp $1/*.deb .
+rm $1/*.deb
+rm -rf S1/panthor-mesa-build
+echo "============================================================="
+ls -l *.deb
+echo "============================================================="
 
 
 
