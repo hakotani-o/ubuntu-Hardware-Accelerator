@@ -87,7 +87,10 @@ sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
 sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
 sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
 sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
-
+# 1. teflon パッケージの指示書を空っぽにします
+truncate -s 0 debian/mesa-teflon-delegate.install
+# 2. Vulkanパッケージの指示書から、overlay-control の記述を削除します
+sed -i '/mesa-overlay-control.py/d' debian/mesa-vulkan-drivers.install
 
 
 
