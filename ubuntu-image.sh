@@ -66,7 +66,7 @@ cp linux-*.deb "$TARGET_DIR/"
 
 # 2. 【★ここがポイント★】Mesaの山から、不要な「-dev」や「-dbg（デバッグ用）」、
 #    および他社用（va-drivers, vdpau等）を完全に除外し、必要な本体だけを狙ってコピー
-find . -name "*.deb" \
+find ./ -maxdepth 1 -name "*.deb" \
   ! -name "*-dev_*.deb" \
   ! -name "*-dbg_*.deb" \
   ! -name "*va-drivers_*.deb" \
