@@ -14,7 +14,6 @@ mkdir -p "$WORK_DIR"
 		 sudo mount -t tmpfs -o size=10G tmpfs $WORK_DIR
 	fi
 cd "$WORK_DIR"
-df
 
 echo "=== 1. 最小限のビルドツールのインストール ==="
 sudo apt-get update
