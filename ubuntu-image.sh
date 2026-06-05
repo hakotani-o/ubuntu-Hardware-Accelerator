@@ -56,9 +56,29 @@ teardown_mountpoint() {
 }
 
 	setup_mountpoint build/chroot
-	 mkdir build/chroot/kernel
-	 ls *.deb
-	 cp *.deb build/chroot/kernel
+#	 mkdir build/chroot/kernel
+# コピー先のフォルダを作成（例：/path/to/rootfs/kernel）
+TARGET_DIR="build/chroot/kernel"
+mkdir -p "$TARGET_DIR"
+
+# 1. まず、カーネルの .deb ファイルをすべてコピー
+cp *.deb "$TARGET_DIR/"
+
+# 2. 【★ここがポイント★】Mesaの山から、不要な「-dev」や「-dbg（デバッグ用）」、
+#    および他社用（va-drivers, vdpau等）を完全に除外し、必要な本体だけを狙ってコピー
+find . -name "*.deb" \
+  ! -name "*-dev_*.deb" \
+  ! -name "*-dbg_*.deb" \
+  ! -name "*va-drivers_*.deb" \
+  ! -name "*vdpau-drivers_*.deb" \
+  ! -name "*opencl-icd_*.deb" \
+  ! -name "*drm-shim_*.deb" \
+  ! -name "*teflon-delegate_*.deb" \
+  -exec cp {} "$TARGET_DIR/" \;
+
+echo "=== 選別完了: /kernel の中身は以下の通りです ==="
+ls -l "$TARGET_DIR"
+ 
 	 chroot build/chroot /setup-script.sh
 	teardown_mountpoint build/chroot
 	 rm build/chroot/setup-script.sh
