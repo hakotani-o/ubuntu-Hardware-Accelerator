@@ -13,6 +13,7 @@ set -x
 	U_BOOT_PARAMETERS="$(cat /etc/kernel/cmdline)"
 	U_BOOT_TIMEOUT="20" 
 EOF
+	apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils
 
 	rm -f /var/lib/dbus/machine-id
 	true > /etc/machine-id
