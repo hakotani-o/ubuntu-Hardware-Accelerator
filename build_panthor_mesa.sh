@@ -19,7 +19,7 @@ echo "URIs: $Uri"
 echo "Suites: $suite-security"
 echo "Components: main universe restricted multiverse"
 echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg"
-} > sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
+} > |sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
 
 # 作業ディレクトリの作成
 WORK_DIR="panthor-mesa-build"
