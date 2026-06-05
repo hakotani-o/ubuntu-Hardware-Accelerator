@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e # エラーが発生したらその時点で停止
 set -x
+echo "deb-src http://ubuntu.com resolute main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
+echo "deb-src http://ubuntu.com resolute-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ubuntu26-src.list
 
 # 作業ディレクトリの作成
 WORK_DIR="panthor-mesa-build"
