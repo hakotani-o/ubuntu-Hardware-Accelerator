@@ -8,7 +8,7 @@ rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR"
 	mem_size=`free --giga|grep Mem|awk '{print $2}'`
 	if [ $mem_size -gt 10 ]; then
-		 mount -t tmpfs -o size=10G tmpfs $WORK_DIR
+		 sudo mount -t tmpfs -o size=10G tmpfs $WORK_DIR
 	fi
 cd "$WORK_DIR"
 df
@@ -137,7 +137,7 @@ echo "cd $(pwd) && sudo dpkg -i *.deb"
 echo "--------------------------------------------------"
 
 	if [ $mem_size -gt 10 ]; then
-		umount $WORK_DIR
+		sudo umount $WORK_DIR
 		sleep 2
 	fi  
 
