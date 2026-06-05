@@ -62,7 +62,7 @@ TARGET_DIR="build/chroot/kernel"
 mkdir -p "$TARGET_DIR"
 
 # 1. まず、カーネルの .deb ファイルをすべてコピー
-cp *.deb "$TARGET_DIR/"
+cp linux-*.deb "$TARGET_DIR/"
 
 # 2. 【★ここがポイント★】Mesaの山から、不要な「-dev」や「-dbg（デバッグ用）」、
 #    および他社用（va-drivers, vdpau等）を完全に除外し、必要な本体だけを狙ってコピー
