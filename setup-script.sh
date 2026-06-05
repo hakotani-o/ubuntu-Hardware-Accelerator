@@ -13,19 +13,18 @@ set -x
 	U_BOOT_PARAMETERS="$(cat /etc/kernel/cmdline)"
 	U_BOOT_TIMEOUT="20" 
 EOF
-	apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils
-
+	
 	rm -f /var/lib/dbus/machine-id
 	true > /etc/machine-id
 	touch /var/log/syslog
 	chown syslog:adm /var/log/syslog
 	ssh-keygen -A
-	echo "---------------------------------------------------"
-    ls -l kernel
-	echo "---------------------------------------------------"
+	
+	apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-plugins-good gstreamer1.0-tools clapper mpv vulkan-tools mesa-utils
 	dpkg -i kernel/*
 	apt-get install -f -y
 	cd / && rm -rf kernel
+	
 	apt-get -y purge cloud-init flash-kernel fwupd ufw grub-efi-arm64
 	apt-get -y autoremove
 	apt-get  clean
