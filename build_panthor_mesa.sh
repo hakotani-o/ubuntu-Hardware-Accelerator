@@ -24,14 +24,14 @@ sudo apt-get install -y build-essential devscripts debhelper ninja-build \
     libxcb-shm0-dev libxcb-dri2-0-dev libxcb-dri3-dev libxshmfence-dev \
     libxrandr-dev libxxf86vm-dev libexpat1-dev libzstd-dev zlib1g-dev \
     python3-ply python3-yaml python3-pip python3-setuptools glslang-tools \
-    spirv-tools libclc-21-dev llvm-21-dev libclang-cpp21-dev \
-    libllvmspirvlib-21-dev libclang-21-dev libwayland-egl-backend-dev \
+    spirv-tools libclc-20-dev llvm-20-dev libclang-cpp20-dev \
+    libllvmspirvlib-20-dev libclang-20-dev libwayland-egl-backend-dev \
     libxcb-randr0-dev  libdrm-dev libpciaccess-dev libffi-dev libsensors-dev libxml2-dev \
   libx11-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev \
   libxcb-present-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev \
   libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev libxshmfence-dev libxxf86vm-dev \
   libwayland-dev libwayland-bin libwayland-egl-backend-dev wayland-protocols \
-  libglvnd-core-dev libvulkan-dev glslang-tools spirv-tools python3-pycparser libarchive-dev
+  libglvnd-core-dev libvulkan-dev glslang-tools python3-pycparser libarchive-dev
 
 
 # 2. apt版の古いmesonが入っていれば削除し、pipで最新版のmesonをシステムに導入します
