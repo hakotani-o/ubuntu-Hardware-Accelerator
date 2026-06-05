@@ -1,0 +1,32 @@
+name: v1-fake-build
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: write  # これがリリース作成に必要
+
+jobs:
+  build_rootfs:
+    
+    runs-on: ubuntu-24.04-arm
+    steps:
+  
+      - uses: actions/checkout@v4
+ 
+      - name: fake
+        run: /bin/bash ./fake-u-bootstrap.sh arm64 2>&1|tee log1
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb.tar
+          path: .
+          retention-days: 1
+  
+
+
+
