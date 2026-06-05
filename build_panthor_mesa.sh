@@ -42,9 +42,13 @@ fi
 sudo apt update
 
 # 作業ディレクトリの作成
-WORK_DIR="$HOME/panthor-mesa-build"
+WORK_DIR="panthor-mesa-build"
 rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR"
+	mem_size=`free --giga|grep Mem|awk '{print $2}'`
+	if [ $mem_size -gt 16 ]; then
+		 mount -t tmpfs -o size=16G tmpfs $WORK_DIR
+	fi
 cd "$WORK_DIR"
 
 # ソースのダウンロード
