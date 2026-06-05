@@ -6,7 +6,7 @@ set -x
 Uri="http://ports.ubuntu.com/ubuntu-ports"
 suite=resolute
 {
-echo "Types: deb-src"
+echo "Types: deb"
 echo "URIs: $Uri"
 echo "Suites: $suite $suite-updates $suite-backports"
 echo "Components: main universe restricted multiverse"
