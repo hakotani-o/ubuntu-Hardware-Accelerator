@@ -14,8 +14,8 @@ cd "$WORK_DIR"
 df
 
 echo "=== 1. 最小限のビルドツールのインストール ==="
-sudo apt update
-sudo apt install -y build-essential devscripts debhelper ninja-build \
+sudo apt-get update
+sudo apt-get install -y build-essential devscripts debhelper ninja-build \
     pkg-config python3-mako libdrm-dev libwayland-dev wayland-protocols \
     libx11-dev libxext-dev libxdamage-dev libxfixes-dev libxcb-glx0-dev \
     libxcb-shm0-dev libxcb-dri2-0-dev libxcb-dri3-dev libxshmfence-dev \
