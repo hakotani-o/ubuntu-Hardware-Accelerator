@@ -1,25 +1,9 @@
 #!/bin/bash
 set -e # エラーが発生したらその時点で停止
 set -x
-# echo "deb-src http://ports.ubuntu.com/ubuntu-ports resolute main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
+ echo "deb-src http://ports.ubuntu.com/ubuntu-ports resolute main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
 # echo "deb-src http://ports.ubuntu.com/ubuntu-ports　resolute-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ubuntu26-src.list
-Uri="http://ports.ubuntu.com/ubuntu-ports"
-suite=resolute
-{
-echo "Types: deb"
-echo "URIs: $Uri"
-echo "Suites: $suite $suite-updates $suite-backports"
-echo "Components: main universe restricted multiverse"
-echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg"
-echo ""
-echo "## Ubuntu security updates. Aside from URIs and Suites,"
-echo "## this should mirror your choices in the previous section."
-echo "Types: deb"
-echo "URIs: $Uri"
-echo "Suites: $suite-security"
-echo "Components: main universe restricted multiverse"
-echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg"
-} | sudo  tee /etc/apt/sources.list.d/ubuntu26-src.list
+
 
 # 作業ディレクトリの作成
 WORK_DIR="panthor-mesa-build"
