@@ -57,8 +57,8 @@ teardown_mountpoint() {
 
 	setup_mountpoint build/chroot
 	 mkdir build/chroot/kernel
+	 ls *.deb
 	 cp *.deb build/chroot/kernel
-	 cp "$HOME/panthor-mesa-build"/*.deb build/chroot/kernel
 	 chroot build/chroot /setup-script.sh
 	teardown_mountpoint build/chroot
 	 rm build/chroot/setup-script.sh
