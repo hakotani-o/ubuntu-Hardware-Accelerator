@@ -102,6 +102,8 @@ sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
 truncate -s 0 debian/mesa-teflon-delegate.install
 # 2. Vulkanパッケージの指示書から、overlay-control の記述を削除します
 sed -i '/mesa-overlay-control.py/d' debian/mesa-vulkan-drivers.install
+# HAKO 02
+sed -i '/mesa-screenshot-control.py/d' debian/mesa-vulkan-drivers.install
 
 
 
