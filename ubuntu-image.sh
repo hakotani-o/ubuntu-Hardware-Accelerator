@@ -61,20 +61,21 @@ teardown_mountpoint() {
 TARGET_DIR="build/chroot/kernel"
 mkdir -p "$TARGET_DIR"
 
-# 1. まず、カーネルの .deb ファイルをすべてコピー
-cp linux-*.deb "$TARGET_DIR/"
+# 1. すべての .deb ファイルをすべてコピー
+# cp linux-*.deb "$TARGET_DIR/"
+cp *.deb "$TARGET_DIR/"
 
 # 2. 【★ここがポイント★】Mesaの山から、不要な「-dev」や「-dbg（デバッグ用）」、
 #    および他社用（va-drivers, vdpau等）を完全に除外し、必要な本体だけを狙ってコピー
-find ./ -maxdepth 1 -name "*.deb" \
-  ! -name "*-dev_*.deb" \
-  ! -name "*-dbg_*.deb" \
-  ! -name "*va-drivers_*.deb" \
-  ! -name "*vdpau-drivers_*.deb" \
-  ! -name "*opencl-icd_*.deb" \
-  ! -name "*drm-shim_*.deb" \
-  ! -name "*teflon-delegate_*.deb" \
-  -exec cp {} "$TARGET_DIR/" \;
+# find ./ -maxdepth 1 -name "*.deb" \
+#  ! -name "*-dev_*.deb" \
+#  ! -name "*-dbg_*.deb" \
+#  ! -name "*va-drivers_*.deb" \
+#  ! -name "*vdpau-drivers_*.deb" \
+#  ! -name "*opencl-icd_*.deb" \
+#  ! -name "*drm-shim_*.deb" \
+#  ! -name "*teflon-delegate_*.deb" \
+#  -exec cp {} "$TARGET_DIR/" \;
 
 echo "=== 選別完了: /kernel の中身は以下の通りです ==="
 ls -l "$TARGET_DIR"
