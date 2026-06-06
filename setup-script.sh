@@ -29,6 +29,23 @@ echo "ubuntu-desktop-minimal hold" | sudo dpkg --set-selections
 	dpkg -i --force-depends kernel/*
 	apt-get install -f -y --no-remove
 	cd / && rm -rf kernel
+# 1. ユーザー「ubuntu」を作成し、パスワードを「ubuntu」に設定
+# (既存の作成方法で消えていた場合、グループ指定などを強固にします)
+sudo useradd -m -s /bin/bash -G sudo,video,render,plugdev,audio,dialoutubuntu
+echo "ubuntu:ubuntu" | sudo chpasswd
+
+# 2. 【★ここが最重要：Ubuntuを騙すおまじない★】
+# 「すでに初回セットアップは全員終わっていますよ」というダミーの完了ファイルを強制配置します
+# これにより、起動時にUbuntuがユーザーを消去・リセットする処理を完全に封じ込めます
+sudo mkdir -p /var/lib/oem-config
+sudo touch /var/lib/oem-config/oem-config.done
+
+# 3. 画面が真っ黒になる原因のサービスを完全に無効化・偽装
+sudo systemctl disable oem-config.service || true
+sudo systemctl disable oem-config.timer || true
+sudo systemctl set-default graphical.target
+
+
 	
 	apt-get -y purge cloud-init flash-kernel fwupd ufw grub-efi-arm64
 	apt-get -y autoremove
