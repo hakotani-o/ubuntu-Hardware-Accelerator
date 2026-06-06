@@ -143,7 +143,15 @@ echo "=== 3. debian/rules と指示書の書き換え (Panthor最適化) ==="
 echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-drm-shim.install
 echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-opencl-icd.install
 echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-teflon-delegate.install
-echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-vulkan-drivers.install
+# 2. 【★ここを修正★】Vulkanの指示書には、ダミーだけでなく「Panthorの本物（panfrost/lvp）」だけを狙って書き込みます！
+# これにより、他社製エラーを回避しつつ、Panthorのコアがちゃんとパッケージにパックされます。
+cat << 'EOF' > debian/mesa-vulkan-drivers.install
+README.rst usr/share/doc/mesa-common-dev/
+usr/lib/*/libvulkan_lvp.so
+usr/lib/*/libvulkan_panfrost.so
+usr/share/vulkan/icd.d/lvp_icd.*.json
+usr/share/vulkan/icd.d/panfrost_icd.*.json
+EOF
 
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
