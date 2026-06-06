@@ -159,7 +159,7 @@ chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/26.0  https://g
 chroot $1 /bin/bash -c "echo /opt/panthor/lib/aarch64-linux-gnu | tee /etc/ld.so.conf.d/0-panthor.conf && ldconfig"
 
 # Vulkanドライバーの環境変数を定義
-chroot $1 /bin/bash -c "echo 'VK_DRIVER_FILES=\"/opt/panthor/share/vulkan/icd.d/panfrost_icd.aarch64.json\"' >> /etc/environment"
+chroot $1 /bin/bash -c "echo 'VK_DRIVER_FILES=\"/opt/panthor/share/vulkan/icd.d/panvk_icd.aarch64.json\"' >> /etc/environment"
 
 chroot $1 /bin/bash -c "cat << 'EOF' > /etc/profile.d/rockchip-panthor.sh
 # 1. 明示的に新グラフィックドライバ（Panthor）をロードする指示
