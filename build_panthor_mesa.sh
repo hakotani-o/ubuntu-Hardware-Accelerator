@@ -128,6 +128,11 @@ sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 # 法のフラグを debian/rules に注入します。
 # これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
 sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
+echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+# 2. 【★今回新しく追加する1行★】
+# Mesa 26特有の _drv_video.so 移動処理（連続する3行）を丸ごとコメントアウトします
+sed -i '/Copy the hardlinked va drivers correctly/,/debian\/mesa-libgallium\/usr\/lib/ s/^/#/' debian/rules
+
 
 
 
