@@ -125,7 +125,7 @@ sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 
 # 2. 【★ここが最大のポイント★】
 # 指示書を「消す」のではなく、「ファイルがなくてもパッケージ作成を続行しろ」という魔
-法のフラグを debian/rules に注入します。
+# 法のフラグを debian/rules に注入します。
 # これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
 sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
 
