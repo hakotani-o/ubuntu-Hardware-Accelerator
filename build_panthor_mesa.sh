@@ -140,10 +140,10 @@ echo "=== 3. debian/rules と指示書の書き換え (Panthor最適化) ==="
 
 # 【★これを追加★】エラーの原因になる他社用パッケージの指示書を、絶対に存在する「空のディレクトリ」の指定に書き換えます
 # これにより、中身は空っぽでも「有効な.debファイル」が100%安全に生成されるようになります
-echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-drm-shim.install
-echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-opencl-icd.install
-echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-teflon-delegate.install
-echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-vulkan-drivers.install
+echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-drm-shim.install
+echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-opencl-icd.install
+echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-teflon-delegate.install
+echo "README.rst usr/share/doc/mesa-common-dev/" > debian/mesa-vulkan-drivers.install
 
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
