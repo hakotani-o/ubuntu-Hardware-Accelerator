@@ -19,8 +19,10 @@ jobs:
     # 2. ローカルと共通のBASHスクリプトを実行
       - name: Run local build script
         run: |
-          chmod +x ./build_panthor_mesa.sh
-          ./build_panthor_mesa.sh
+           chmod +x u-bootstrap.sh
+           ./u-bootstrap.sh arm64
+#          chmod +x ./build_panthor_mesa.sh
+#          ./build_panthor_mesa.sh
 
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
