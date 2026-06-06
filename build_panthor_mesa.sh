@@ -127,7 +127,7 @@ sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 # 指示書を「消す」のではなく、「ファイルがなくてもパッケージ作成を続行しろ」という魔
 # 法のフラグを debian/rules に注入します。
 # これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
-sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
+### sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
 echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 2. 【★今回新しく追加する1行★】
 # Mesa 26特有の _drv_video.so 移動処理（連続する3行）を丸ごとコメントアウトします
@@ -135,6 +135,15 @@ sed -i '/Copy the hardlinked va drivers correctly/,/debian\/mesa-libgallium\/usr
 sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
 
 
+echo "=== 3. debian/rules と指示書の書き換え (Panthor最適化) ==="
+# (前略：hakotaniさんが作ってくれた、先ほどの *_drv_video.so の mv コメントアウト行はそのまま残してください！)
+
+# 【★これを追加★】エラーの原因になる他社用パッケージの指示書を、絶対に存在する「空のディレクトリ」の指定に書き換えます
+# これにより、中身は空っぽでも「有効な.debファイル」が100%安全に生成されるようになります
+echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-drm-shim.install
+echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-opencl-icd.install
+echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-teflon-delegate.install
+echo "usr/share/doc/mesa-common-dev/changelog.Debian.gz" > debian/mesa-vulkan-drivers.install
 
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
