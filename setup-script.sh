@@ -45,9 +45,18 @@ sudo systemctl disable oem-config.service || true
 sudo systemctl disable oem-config.timer || true
 sudo systemctl set-default graphical.target
 
+ apt-get -y --reinstall install ubuntu-desktop-minimal gdm3 linux-firmware snapd cloud-initramfs-growroot oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
+ apt-get -y --reinstall install build-essential gcc-aarch64-linux-gnu bison \
+qemu-user-binfmt qemu-system-arm qemu-efi-aarch64 binfmt-support \
+debootstrap flex libssl-dev bc rsync kmod cpio xz-utils fakeroot parted \
+udev dosfstools uuid-runtime git-lfs device-tree-compiler python3 \
+python-is-python3 fdisk bc debhelper python3-pyelftools python3-setuptools \
+python3-pkg-resources swig libfdt-dev libpython3-dev gawk \
+git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex \
+libelf-dev bison sudo libgnutls28-dev
 
 	
 	apt-get -y purge cloud-init flash-kernel fwupd ufw grub-efi-arm64
-	apt-get -y autoremove
+#	apt-get -y autoremove
 	apt-get  clean
 	sync
