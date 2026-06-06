@@ -20,7 +20,7 @@ jobs:
       - name: Run local build script
         run: |
            chmod +x u-bootstrap.sh
-           ./u-bootstrap.sh arm64
+           sudo ./u-bootstrap.sh arm64
 #          chmod +x ./build_panthor_mesa.sh
 #          ./build_panthor_mesa.sh
 
