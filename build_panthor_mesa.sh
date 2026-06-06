@@ -132,7 +132,7 @@ echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 2. 【★今回新しく追加する1行★】
 # Mesa 26特有の _drv_video.so 移動処理（連続する3行）を丸ごとコメントアウトします
 sed -i '/Copy the hardlinked va drivers correctly/,/debian\/mesa-libgallium\/usr\/lib/ s/^/#/' debian/rules
-sed -i '/mv debian\/tmp\/usr\/lib\/aarch64-linux-gnu\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/aarch64-linux-gnu\/dri/ s/^/#/' debian/rules
+sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
 
 
 
