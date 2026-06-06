@@ -19,10 +19,15 @@ EOF
 	touch /var/log/syslog
 	chown syslog:adm /var/log/syslog
 	ssh-keygen -A
-	
+
+# 1. デスクトップ環境を絶対に削除させないためのロック（おまじない）
+echo "gnome-shell hold" | sudo dpkg --set-selections
+echo "gdm3 hold" | sudo dpkg --set-selections
+echo "ubuntu-desktop-minimal hold" | sudo dpkg --set-selections
+
 	apt-get install -y gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-gl clapper mpv vulkan-tools mesa-utils
-	dpkg -i kernel/*
-	apt-get install -f -y
+	dpkg -i --force-depends kernel/*
+	apt-get install -f -y --no-remove
 	cd / && rm -rf kernel
 	
 	apt-get -y purge cloud-init flash-kernel fwupd ufw grub-efi-arm64
