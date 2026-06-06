@@ -118,9 +118,9 @@ cd "$MESA_SRC_DIR"
 
 echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 1. ドライバーの絞り込み（これはそのまま残します。ビルドが爆速・軽量になります）
-sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe \\/' debian/rules
+sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe /' debian/rules
 if [ -d "src/vulkan/drivers/panvk" ]; then VULKAN="panvk"; else VULKAN="panfrost"; fi
-sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN},swrast \\/" debian/rules
+sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN},swrast /" debian/rules
 sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 
 # 2. 【★ここが最大のポイント★】
