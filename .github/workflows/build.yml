@@ -19,8 +19,6 @@ jobs:
     # 2. ローカルと共通のBASHスクリプトを実行
       - name: Run local build script
         run: |
-           chmod +x u-bootstrap.sh
-           sudo ./u-bootstrap.sh arm64
 #          chmod +x ./build_panthor_mesa.sh
 #          ./build_panthor_mesa.sh
 
@@ -33,9 +31,11 @@ jobs:
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列>挙
 
       - name: Build rootfs tarball
-        run: |
-          chmod +x ubuntu-image.sh
-          sudo ./ubuntu-image.sh
+        run: |          
+          chmod +x u-bootstrap.sh
+          sudo ./u-bootstrap.sh arm64
+          #chmod +x ubuntu-image.sh
+          #sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
 
       - name: Upload rootfs artifact
