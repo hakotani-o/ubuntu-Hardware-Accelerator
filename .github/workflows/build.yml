@@ -20,7 +20,7 @@ jobs:
       - name: Run local build script
         run: |
           chmod +x ./build_panthor_mesa.sh
-#          ./build_panthor_mesa.sh
+          sudo ./build_panthor_mesa.sh arm64
 
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
