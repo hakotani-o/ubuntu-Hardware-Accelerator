@@ -153,7 +153,7 @@ mkdir $1/bbb
 chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 https://gitlab.freedesktop.org/mesa/libdrm && cd libdrm/ && mkdir build && cd build/ && meson && ninja install"
 
 # Mesaの仕入れとビルド（Panthor最適化版）
-chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/26.0 https://freedesktop.org && cd mesa && mkdir build && cd build && meson setup .. -Dvulkan-drivers=panfrost -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panthor && ninja install"
+chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/26.0 https://gitlab.freedesktop.org && cd mesa && mkdir build && cd build && meson setup .. -Dvulkan-drivers=panfrost -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panthor && ninja install"
 
 # 共有ライブラリのパスを通す
 chroot $1 /bin/bash -c "echo /opt/panthor/lib/aarch64-linux-gnu | tee /etc/ld.so.conf.d/0-panthor.conf && ldconfig"
