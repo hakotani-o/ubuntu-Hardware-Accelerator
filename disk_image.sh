@@ -91,6 +91,9 @@ mkdir -p ${mount_point}
     } | fdisk "${disk}" &> /dev/null || true
 
     partprobe "${disk}"
+    # ==================== ★ここにこの1行を追加！ ====================
+    sgdisk -e "${disk}"
+    # ===============================================================
 
     partition_char="$(if [[ ${disk: -1} == [0-9] ]]; then echo p; fi)"
 
