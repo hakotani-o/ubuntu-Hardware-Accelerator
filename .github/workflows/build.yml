@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-    # 2. ローカルと共通のBASHスクリプトを実行
+    # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
       - name: Run local build script
         run: |
           chmod +x ./meas-build-env.sh
@@ -31,9 +31,14 @@ jobs:
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列>挙
 
       - name: Build rootfs tarball
-        run: |          
-          chmod +x u-bootstrap.sh
-          sudo ./u-bootstrap.sh arm64
+        run: |
+          # Mesa deb
+          chmod +x msae-bootstrap.sh
+          sudo ./mesa-bootstrap.sh arm64
+          # Mesa build
+          #chmod +x u-bootstrap.sh
+          #sudo ./u-bootstrap.sh arm64
+          # ubuntu-image
           #chmod +x ubuntu-image.sh
           #sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
