@@ -135,3 +135,7 @@ cp build_panthor_mesa.sh $1 && chmod +x $1/build_panthor_mesa.sh
 chroot $1 /build_panthor_mesa.sh
 cp $1/*.deb .
 ls *.deb
+if [ $mem_size -gt 10 ]; then
+	umount $1
+	sleep 2
+fi
