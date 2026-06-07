@@ -135,4 +135,4 @@ libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
 cp build_panthor_mesa.sh $1 && chmod +x $1/build_panthor_mesa.sh
-chroot $1 build_panthor_mesa.sh
+chroot $1 /build_panthor_mesa.sh
