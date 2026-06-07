@@ -146,7 +146,7 @@ sed -i 's/#ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/g' $1/etc/adduser.conf
 # kernel
 mkdir $1/kkk && cp *.deb $1/kkk
 chroot $1 /bin/bash -c "apt-get -y purge \$(dpkg --list | grep -Ei 'linux-image|linux-headers|linux-modules|linux-rockchip' | awk '{ print \$2 }')"
-chroot $1 /bin/bash -c "cd kkk && dpkg -i *.deb"
+chroot $1 /bin/bash -c "cd kkk && dpkg -i *.deb" || true
 
 # mesa
 #mkdir $1/bbb
