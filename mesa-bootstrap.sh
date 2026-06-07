@@ -144,9 +144,12 @@ sed -i 's/#EXTRA_GROUPS=.*/EXTRA_GROUPS="video"/g' $1/etc/adduser.conf
 sed -i 's/#ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/g' $1/etc/adduser.conf
 
 # kernel
-mkdir $1/kkk && cp *.deb $1/kkk
+mkdir $1/kkk && rm -f libdrm-dev_*.deb && rm -f libegl1-mesa-dev_*.deb && rm -f libgbm-dev_*.deb &&
+rm -f libgl1-mesa-dev_*.deb && rm -f libgles2-mesa-dev_*.deb && rm -f mesa-common-dev_*.deb &&
+rm -f mesa-opencl-icd_*.deb && rm -f mesa-teflon-delegate_*.deb && rm -f mesa-drm-shim_*.deb &&
+rm -f libdrm-tests_*.deb && cp *.deb $1/kkk
 chroot $1 /bin/bash -c "apt-get -y purge \$(dpkg --list | grep -Ei 'linux-image|linux-headers|linux-modules|linux-rockchip' | awk '{ print \$2 }')"
-chroot $1 /bin/bash -c "cd kkk && dpkg -i *.deb" || true
+chroot $1 /bin/bash -c "cd kkk && dpkg -i *.deb"
 
 # mesa
 #mkdir $1/bbb
