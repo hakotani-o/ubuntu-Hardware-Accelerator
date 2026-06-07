@@ -29,9 +29,9 @@ dpkg-buildpackage -us -uc -b
 
 # 5. 1つ上のディレクトリに .deb ファイルが生成されるので、それをインストール
 cd ..
-cp *.deb ..
-cd ..
 sudo dpkg -i *.deb
+cp *.deb /
+cd ..
 echo "------------------ LIBDRM -----------------------"
 pwd
 ls -l *.deb
@@ -193,8 +193,8 @@ debuild -us -uc -b -d
 
 echo "=== 6. ビルド完了 ==="
 cd ..
-cp *.deb ..
-cd ..
+cp *.deb /
+cd /
 echo "以下のディレクトリにPanthor専用の .deb パッケージが生成されました:"
 pwd
 ls -l *.deb
