@@ -196,6 +196,7 @@ cd ..
 cp *.deb /
 cd /
 echo "以下のディレクトリにPanthor専用の .deb パッケージが生成されました:"
+echo "=========== MESA-DEB ========"
 pwd
 ls -l *.deb
 
