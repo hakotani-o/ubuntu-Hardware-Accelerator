@@ -55,15 +55,8 @@ teardown_mountpoint() {
 rm -rf $1
 mkdir $1
 chroot_dir=$1
-mem_size=`free --giga|grep Mem|awk '{print $2}'`
-if [ $mem_size -gt 6 ]; then
-	mount -t tmpfs -o size=10G tmpfs $chroot_dir
-fi
-rm -f wget-log* kernel_version
-
 #suite=plucky
 suite=resolute
-#Uri="https://mirror.hashy0917.net/ubuntu-ports/"
 #Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
 Uri="http://ports.ubuntu.com/ubuntu-ports"
 	debootstrap --arch=arm64 $suite arm64 $Uri
@@ -136,3 +129,5 @@ libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-
 
 cp build_panthor_mesa.sh $1 && chmod +x $1/build_panthor_mesa.sh
 chroot $1 /build_panthor_mesa.sh
+cp $1/*.deb .
+ls *.deb
