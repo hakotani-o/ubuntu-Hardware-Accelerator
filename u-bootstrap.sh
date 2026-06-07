@@ -153,13 +153,13 @@ mkdir $1/bbb
 chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 https://gitlab.freedesktop.org/mesa/libdrm && cd libdrm/ && mkdir build && cd build/ && meson && ninja install"
 
 # Mesaの仕入れとビルド（Panthor最適化版）
-chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/26.0  https://gitlab.freedesktop.org/mesa/mesa.git && cd mesa && mkdir build && cd build && meson setup .. -Dvulkan-drivers=panvk -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panthor && ninja install"
+chroot $1 /bin/bash -c "cd bbb && git clone --depth 1 -b staging/26.0 https://freedesktop.org && cd mesa && mkdir build && cd build && meson setup .. -Dvulkan-drivers=panfrost -Dgallium-drivers=panfrost -Dlibunwind=false -Dprefix=/opt/panthor && ninja install"
 
 # 共有ライブラリのパスを通す
 chroot $1 /bin/bash -c "echo /opt/panthor/lib/aarch64-linux-gnu | tee /etc/ld.so.conf.d/0-panthor.conf && ldconfig"
 
 # Vulkanドライバーの環境変数を定義
-chroot $1 /bin/bash -c "echo 'VK_DRIVER_FILES=\"/opt/panthor/share/vulkan/icd.d/panvk_icd.aarch64.json\"' >> /etc/environment"
+chroot $1 /bin/bash -c "echo 'VK_DRIVER_FILES=\"/opt/panthor/share/vulkan/icd.d/panfrost_icd.aarch64.json\"' >> /etc/environment"
 
 chroot $1 /bin/bash -c "cat << 'EOF' > /etc/profile.d/rockchip-panthor.sh
 # 1. 明示的に新グラフィックドライバ（Panthor）をロードする指示
