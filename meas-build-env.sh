@@ -8,12 +8,6 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-kernel=`ls *.deb|wc -l`
-if [ $kernel -ne 3 ]; then
-	echo "Build kernel first"
-	exit 1
-fi
-
 setup_mountpoint() {
     local mountpoint="$1"
 
