@@ -4,7 +4,33 @@ set -x
  echo "deb-src http://ports.ubuntu.com/ubuntu-ports resolute main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ubuntu26-src.list
  echo "deb-src http://ports.ubuntu.com/ubuntu-ports resolute-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ubuntu26-src.list
 
+# 1. 作業用のディレクトリを作成して移動
+mkdir -p ~/libdrm-build && cd ~/libdrm-build
 
+# 最新 libdrm ソース（例: GitHubからcloneしたもの）
+# git clone https://github.com source
+# cd source
+
+# 2. 依存関係のインストールと、公式ソースコードのダウンロード
+sudo apt update
+sudo apt build-dep libdrm -y
+apt-get source libdrm
+# 最新libdrm ソースの場合
+# cp -r libdrm-*/debian ./
+# rm -rf libdrm-*/
+
+
+# 3. 【重要】ダウンロードされたソースコードの「フォルダの中」に移動します
+# (apt-get source を実行すると、libdrm-2.x.x のようなフォルダが自動で作られます)
+cd libdrm-*/
+
+# 4. パッケージをビルドする（署名はスキップ）
+dpkg-buildpackage -us -uc -b
+
+# 5. 1つ上のディレクトリに .deb ファイルが生成されるので、それをインストール
+cd ..
+cp *.deb ..
+cd ..
 # 作業ディレクトリの作成
 WORK_DIR="panthor-mesa-build"
 rm -rf "$WORK_DIR"
@@ -23,8 +49,8 @@ sudo apt-get install -y build-essential devscripts debhelper ninja-build \
     libxcb-shm0-dev libxcb-dri2-0-dev libxcb-dri3-dev libxshmfence-dev \
     libxrandr-dev libxxf86vm-dev libexpat1-dev libzstd-dev zlib1g-dev \
     python3-ply python3-yaml python3-pip python3-setuptools glslang-tools \
-    spirv-tools libclc-20-dev llvm-20-dev libclang-cpp20-dev \
-    libllvmspirvlib-20-dev libclang-20-dev libwayland-egl-backend-dev \
+    spirv-tools libclc-21-dev llvm-21-dev libclang-cpp21-dev \
+    libllvmspirvlib-21-dev libclang-21-dev libwayland-egl-backend-dev \
     libxcb-randr0-dev  libdrm-dev libpciaccess-dev libffi-dev libsensors-dev libxml2-dev \
   libx11-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev \
   libxcb-present-dev libxcb-randr0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev \
@@ -41,24 +67,22 @@ sudo python3 -m pip install --break-system-packages --upgrade meson
 sudo ln -sf /usr/local/bin/meson /usr/bin/meson
 
 
-echo "=== 2. ソースパッケージリポジトリの有効化とソース取得 ==="
-# Ubuntu 24.04の新しい形式と従来の形式の両方に対応
-#if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
-    # 「deb-src」がまだ含まれていない「Types: deb」の行だけを置換する
-#    sudo sed -i '/deb-src/!s/Types: deb/Types: deb deb-src/g' /etc/apt/sources.list.d/ubuntu.sources
-#    cat /etc/apt/sources.list.d/ubuntu.sources
-#else
-    # 従来の形式（すでにコメントアウトが解除されている場合は何もしない）
-#    sudo sed -i 's/^#\s*deb-src/deb-src/' /etc/apt/sources.list
-#    cat /etc/apt/sources.list
-#fi
-#sudo apt update
-
 
 # ソースのダウンロード
 apt source mesa
 MESA_SRC_DIR=$(ls -d mesa-*)
 cd "$MESA_SRC_DIR"
+
+### === 【追加】debian/changelog の自動書き換え ===
+echo "=== 2.5. debian/changelog の自動書き換え (Panthorバージョン化) ==="
+# Ubuntu 26.04 (resolute) の場合を想定しています。お使いのバージョンに合わせて noble を変更してください。
+# エディタを開かずに、非対話で changelog の先頭にカスタムバージョンを追加します。
+DEBEMAIL="opi5plus@bcc.example.com" DEBFULLNAME="hakotani-o" \
+dch --newversion "26.0.3-1ubuntu1~panthor1" \
+    --distribution resolute \
+    --force-distribution \
+    "Build for Panthor GPU support with optimization"
+
 
 ### echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # gallium-drivers の行を置換 (panfrost,kmsro,zink,softpipe のみに制限)
