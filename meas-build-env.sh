@@ -55,6 +55,10 @@ teardown_mountpoint() {
 rm -rf $1
 mkdir $1
 chroot_dir=$1
+mem_size=`free --giga|grep Mem|awk '{print $2}'`
+if [ $mem_size -gt 10 ]; then
+	mount -t tmpfs -o size=10G tmpfs $chroot_dir
+fi
 #suite=plucky
 suite=resolute
 #Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
