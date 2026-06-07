@@ -132,7 +132,6 @@ fi
 # Create fstab entries
 echo "# <file system>     <mount point>  <type>  <options>   <dump>  <fsck>" > ${mount_point}/writable/etc/fstab
 echo "UUID=${root_uuid,,} /              ext4    defaults,noatime,errors=remount-ro    0       1" >> ${mount_point}/writable/etc/fstab
-echo "securityfs /sys/kernel/security securityfs defaults 0 0" >> ${mount_point}/writable/etc/fstab
 
 # Write bootloader to disk image
 if [ -f "u-boot-rockchip.bin" ]; then
