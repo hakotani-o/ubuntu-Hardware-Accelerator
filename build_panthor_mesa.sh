@@ -31,7 +31,7 @@ dpkg-buildpackage -us -uc -b
 cd ..
 sudo dpkg -i *.deb
 cp *.deb /
-cd ..
+cd /
 echo "------------------ LIBDRM -----------------------"
 pwd
 ls -l *.deb
