@@ -33,7 +33,7 @@ jobs:
       - name: Build rootfs tarball
         run: |
           # Mesa deb
-          chmod +x msaa-bootstrap.sh
+          chmod +x mesa-bootstrap.sh
           sudo ./mesa-bootstrap.sh arm64
           # Mesa build
           #chmod +x u-bootstrap.sh
