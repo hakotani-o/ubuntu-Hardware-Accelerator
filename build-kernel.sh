@@ -58,7 +58,7 @@ ls *.deb
 echo "==================================================================================="
 echo "DISK usage"
 df $1
-if [ $mem_size -gt 4 ]; then
+if [ $mem_size -gt 8 ]; then
 	sudo umount $linux_dir
 	sleep 2
 fi
