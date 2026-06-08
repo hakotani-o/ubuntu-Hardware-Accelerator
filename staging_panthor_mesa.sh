@@ -38,7 +38,7 @@ echo "------------------ LIBDRM -----------------------"
 pwd
 ls -l *.deb
 echo "-------------------------------------------------"
-exit 1
+
 # 作業ディレクトリの作成
 WORK_DIR="panthor-mesa-build"
 rm -rf "$WORK_DIR"
