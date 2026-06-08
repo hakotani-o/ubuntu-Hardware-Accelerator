@@ -223,13 +223,7 @@ losetup -d "${loop}"
 
 # Exit trap is no longer needed
 trap '' EXIT
-# ==================== ★ここに自動拡張スクリプトを仕込む追加コード ====================
-if [ ! -f pishrink.sh ]; then
-    wget -q https://githubusercontent.com
-fi
-chmod +x pishrink.sh
-sudo ./pishrink.sh "${img}"  # これを実行するだけで自動拡張機能が内部に組み込まれます
-# ====================================================================================
+
 echo -e "\nCompressing $(basename "${img}.xz")\n"
 xz -v -9 -T0 "${img}"
 #rm "${img}"
