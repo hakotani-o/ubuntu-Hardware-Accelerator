@@ -41,7 +41,16 @@ jobs:
         run: |
           cat rel.txt
           sudo apt-get update
-          sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列>挙
+          sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列挙
+
+      - name: Load Release Info from File
+        run: |
+          if [ -f rel.txt ]; then
+            cat rel.txt >> $GITHUB_ENV
+            rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
+          else
+            echo "RELEASE_MESA_INFO=Unknown Mesa Build" >> $GITHUB_ENV
+          fi
 
       - name: Build rootfs tarball
         run: |
