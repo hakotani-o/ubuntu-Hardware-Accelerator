@@ -138,17 +138,16 @@ jobs:
           # タグ名を固定ではなく、確実に新しいものにする
           tag_name: v1.0.${{ github.run_number }}
           name: Release Build ${{ github.run_number }}
-           # 👇 ここでスクリプトから受け取った変数（RELEASE_MESA_INFO）を埋め込みます
-    　　　　body: |
-          ${{ env.RELEASE_MESA_INFO }}
+          # 👇 ここでスクリプトから受け取った変数（RELEASE_MESA_INFO）を埋め込みます
+          body: |
+             ${{ github.env.RELEASE_MESA_INFO }}
           files: release-assets/**/*
           draft: false
           prerelease: false
           # 権限問題を回避するための設定
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
