@@ -39,6 +39,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cat rel.txt
           sudo apt-get update
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列>挙
 
