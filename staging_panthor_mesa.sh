@@ -195,7 +195,8 @@ debuild -us -uc -b -d
 
 echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
-echo "RELEASE_MESA_INFO=Freedesktop Mesa ${DETECTED_VERSION}" >> "$GITHUB_ENV"
+# echo "RELEASE_MESA_INFO=Freedesktop Mesa ${DETECTED_VERSION}" >> "$GITHUB_ENV"
+echo "RELEASE_MESA_INFO=Freedesktop Mesa ${DETECTED_VERSION}" > /rel.txt
 cd ..
 cp *.deb /
 cd /
