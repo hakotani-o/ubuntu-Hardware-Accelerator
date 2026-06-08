@@ -112,7 +112,7 @@ udev dosfstools uuid-runtime git-lfs device-tree-compiler python3 \
 python-is-python3 fdisk bc debhelper python3-pyelftools python3-setuptools \
 python3-pkg-resources swig libfdt-dev libpython3-dev gawk \
 git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex \
-libelf-dev bison sudo libgnutls28-dev
+libelf-dev bison sudo libgnutls28-dev cloud-guest-utils e2fsprogs
 
 # Mesa new part3
 #chroot $1 apt-get -y install build-essential meson ninja-build pkgconf pkgconf-bin python3-mako \
