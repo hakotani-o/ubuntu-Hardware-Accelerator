@@ -145,6 +145,52 @@ echo U_BOOT_FDT='"'"$fdt_name"'"' >> ${mount_point}/writable/etc/default/u-boot
 echo U_BOOT_FDT_DIR='"'"$dtbs_install_path"'"' >> ${mount_point}/writable/etc/default/u-boot
 #echo U_BOOT_FDT_OVERLAYS_DIR='"/usr/lib/linux-image-"' >> ${mount_point}/writable/etc/default/u-boot
 
+# ==================== ★【修正】自作自動拡張サービスをchroot内に仕込む ====================
+echo "仕込み中: 自動拡張サービス"
+chroot ${mount_point}/writable/ /bin/bash -c "
+apt-get install -y cloud-guest-utils resize2fs
+
+cat << 'EOF' > /usr/local/bin/firstboot-growroot.sh
+#!/bin/bash
+exec > /var/log/firstboot-growroot.log 2>&1
+echo \"=== Starting RootFS Auto Grow ===\"
+ROOT_DEV=\$(findmnt -n -o SOURCE /)
+DEV=\$(lsblk -no PKNAME \"\${ROOT_DEV}\")
+PART=\$(echo \"\${ROOT_DEV}\" | grep -o '[0-9]*\$')
+if [ -z \"\${DEV}\" ] || [ -z \"\${PART}\" ]; then
+    echo \"ERROR: Could not detect root device.\"
+    exit 1
+fi
+DEV_PATH=\"/dev/\${DEV}\"
+growpart \"\${DEV_PATH}\" \"\${PART}\"
+partx -u \"\${ROOT_DEV}\"
+resize2fs \"\${ROOT_DEV}\"
+echo \"=== RootFS Auto Grow Completed ===\"
+systemctl disable firstboot-growroot.service
+EOF
+
+chmod +x /usr/local/bin/firstboot-growroot.sh
+
+cat << 'EOF' > /etc/systemd/system/firstboot-growroot.service
+[Unit]
+Description=First Boot Root Partition Resizer
+After=local-fs.target
+Before=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/firstboot-growroot.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable firstboot-growroot.service
+"
+# ====================================================================================
+
+
 echo "---------------Check the u-boot settings.----------------"
 cat ${mount_point}/writable/etc/default/u-boot
 echo "----------------------------------------------------------"
