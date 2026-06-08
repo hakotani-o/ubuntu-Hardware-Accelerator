@@ -32,6 +32,7 @@ jobs:
         run: |
           chmod +x ./meas-build-env.sh
           sudo ./meas-build-env.sh arm64
+          cat rel.txt >> $GITHUB_ENV
 
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
