@@ -131,8 +131,12 @@ libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-
 #chroot $1 apt-get build-dep -y mesa
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
+# ubuntu version
 cp build_panthor_mesa.sh $1 && chmod +x $1/build_panthor_mesa.sh
 chroot $1 /build_panthor_mesa.sh
+# mesa staging 26.0 version
+cp staging_panthor_mesa.sh $1 && chmod +x $1/staging_panthor_mesa.sh
+chroot $1 /staging_panthor_mesa.sh
 cp $1/*.deb .
 ls *.deb
 teardown_mountpoint $chroot_dir
