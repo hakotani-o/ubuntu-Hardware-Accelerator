@@ -141,17 +141,6 @@ dch -b --newversion "${mesa_version}-1ubuntu1~panthor1" \
 ### sed -i '/mesa-screenshot-control.py/d' debian/mesa-vulkan-drivers.install
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
-# ※Mesaのバージョンにより指定名が panfrost か panvk か異なるため、ソースフォルダ名から自動判定
-### if [ -d "src/vulkan/drivers/panvk" ]; then
-###    VULKAN_DRIVER_NAME="panvk"
-### else
-###    VULKAN_DRIVER_NAME="panfrost"
-### fi
-### sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN_DRIVER_NAME},swrast/" debian/rules
-
-# LLVMを必須とする他のドライバー（iris, radeonsi等）を無効化したため、LLVM依存設定自体をオフにする
-### sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
-
 echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 1. ドライバーの絞り込み（これはそのまま残します。ビルドが爆速・軽量になります）
 sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe /' debian/rules
@@ -185,8 +174,10 @@ cat << 'EOF' > debian/mesa-vulkan-drivers.install
 README.rst usr/share/doc/mesa-common-dev/
 usr/lib/*/libvulkan_lvp.so
 usr/lib/*/libvulkan_panfrost.so
+usr/lib/*/libvulkan_panvk.so
 usr/share/vulkan/icd.d/lvp_icd.*.json
 usr/share/vulkan/icd.d/panfrost_icd.*.json
+usr/share/vulkan/icd.d/panvk_icd.*.json
 EOF
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
