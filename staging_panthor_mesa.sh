@@ -20,7 +20,7 @@ cp -r libdrm-*/debian ./
 rm -rf libdrm-*/
 
 cd debian
-patch -p1 < ../../../libdrm-amdgpu1.symbols.patch
+patch -p1 < /libdrm-amdgpu1.symbols.patch
 cd ..
 # 3. 【重要】ダウンロードされたソースコードの「フォルダの中」に移動します
 # (apt-get source を実行すると、libdrm-2.x.x のようなフォルダが自動で作られます)
