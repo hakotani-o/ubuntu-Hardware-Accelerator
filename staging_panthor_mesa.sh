@@ -31,7 +31,7 @@ dpkg-buildpackage -us -uc -b
 
 # 5. 1つ上のディレクトリに .deb ファイルが生成されるので、それをインストール
 cd ..
-#sudo dpkg -i *.deb
+sudo dpkg -i *.deb
 cp *.deb /
 cd /
 echo "------------------ LIBDRM -----------------------"
