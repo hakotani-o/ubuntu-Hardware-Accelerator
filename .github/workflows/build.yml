@@ -49,6 +49,7 @@ jobs:
            else
             echo "Unknown Mesa Build" > tmp_memo
            fi
+steps:
       - id: set_outputs
         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
          
