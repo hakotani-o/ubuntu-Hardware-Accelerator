@@ -20,8 +20,9 @@ permissions:
 
 jobs:
   build_rootfs:
-    
     runs-on: ubuntu-24.04-arm
+    outputs:
+         RELEASE_MESA_INFO: ${{ steps.step1.outputs.RELEASE_MESA_INFO }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,8 +33,7 @@ jobs:
         run: |
           chmod +x ./meas-build-env.sh
           sudo ./meas-build-env.sh arm64
-          cat rel.txt >> $GITHUB_ENV
-
+          
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
 
@@ -43,14 +43,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列挙
 
-      - name: Load Release Info from File
+#      - name: Load Release Info from File
+      - id: step1
         run: |
-          if [ -f rel.txt ]; then
+           if [ -f rel.txt ]; then
             cat rel.txt >> $GITHUB_OUTPUT
             rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
-          else
+           else
             echo "RELEASE_MESA_INFO=Unknown Mesa Build" >> $GITHUB_OUTPUT
-          fi
+           fi
 
       - name: Build rootfs tarball
         run: |
@@ -64,6 +65,7 @@ jobs:
           #chmod +x ubuntu-image.sh
           #sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
+          echo ${{ needs.build_rootfs.outputs.RELEASE_MESA_INFO }}
 
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4
@@ -129,7 +131,7 @@ jobs:
           path: final_assets/
           retention-days: 1
   release:
-    needs: build
+    needs: [ build , build_rootfs ]
     runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
@@ -149,9 +151,9 @@ jobs:
           # タグ名を固定ではなく、確実に新しいものにする
           tag_name: v1.0.${{ github.run_number }}
           name: Release Build ${{ github.run_number }}
-                ${{ needs.build_rootfs.outputs.RELEASE_MESA_INFO }}
           # 👇 ここでスクリプトから受け取った変数（RELEASE_MESA_INFO）を埋め込みます
           body: |
+          steps:
              ${{ needs.build_rootfs.outputs.RELEASE_MESA_INFO }}
           files: release-assets/**/*
           draft: false
