@@ -22,7 +22,7 @@ jobs:
   build_rootfs:
     runs-on: ubuntu-24.04-arm
     outputs:
-         RELEASE_MESA_INFO: ${{ steps.step1.outputs.RELEASE_MESA_INFO }}
+         shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +65,6 @@ jobs:
           #chmod +x ubuntu-image.sh
           #sudo ./ubuntu-image.sh
           # ここで rootfs.tar.xz などができる想定
-          echo ${{ needs.build_rootfs.outputs.RELEASE_MESA_INFO }}
 
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4
@@ -154,7 +153,7 @@ jobs:
           # 👇 ここでスクリプトから受け取った変数（RELEASE_MESA_INFO）を埋め込みます
           body: |
           steps:
-             ${{ needs.build_rootfs.outputs.RELEASE_MESA_INFO }}
+             ${{ needs.build_rootfs.outputs.shared_value }}
           files: release-assets/**/*
           draft: false
           prerelease: false
