@@ -21,6 +21,7 @@ permissions:
 jobs:
   build_rootfs:
     runs-on: ubuntu-24.04-arm
+    outputs: shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}    
     steps:
       - uses: actions/checkout@v4
     # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
@@ -47,9 +48,6 @@ jobs:
            else
             echo "Unknown Mesa Build" > tmp_memo
            fi
-    outputs:
-      shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}    
-    steps:
       - id: set_outputs
         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
 
