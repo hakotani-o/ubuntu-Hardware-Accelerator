@@ -22,10 +22,9 @@ jobs:
   build_rootfs:
     runs-on: ubuntu-24.04-arm
     outputs:
-         shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
+      shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
     steps:
       - uses: actions/checkout@v4
-
     # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
       - name: Run local build script
         env:
@@ -44,7 +43,7 @@ jobs:
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列挙
 
 #      - name: Load Release Info from File
-      - id: step1
+      - id: set_outputs
         run: |
            if [ -f rel.txt ]; then
             cat rel.txt >> $GITHUB_OUTPUT
