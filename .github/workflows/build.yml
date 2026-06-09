@@ -21,7 +21,8 @@ permissions:
 jobs:
   build_rootfs:
     runs-on: ubuntu-24.04-arm
-    outputs: shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}    
+    outputs: 
+      shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}    
     steps:
       - uses: actions/checkout@v4
     # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
