@@ -19,7 +19,7 @@ permissions:
   contents: write  # これがリリース作成に必要
 
 jobs:
-  build_rootfs:
+build_rootfs:
     runs-on: ubuntu-24.04-arm
     outputs:
       shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
@@ -49,11 +49,11 @@ jobs:
            else
             echo "Unknown Mesa Build" > $tmp_memo
            fi
-    steps:
-       - id: set_outputs
-         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
-       - name: Build rootfs tarball
-         run: |
+      - id: set_outputs
+        run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
+         
+      - name: Build rootfs tarball
+        run: |
           # Mesa deb
           chmod +x mesa-bootstrap.sh
           sudo ./mesa-bootstrap.sh arm64
