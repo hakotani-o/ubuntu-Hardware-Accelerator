@@ -21,18 +21,16 @@ permissions:
 jobs:
   build_rootfs:
     runs-on: ubuntu-24.04-arm
-    outputs:
-      shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
     steps:
       - uses: actions/checkout@v4
     # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
       - name: Run local build script
-        env:
-          MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
+        env: 
+           MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
         run: |
           chmod +x ./meas-build-env.sh
           sudo ./meas-build-env.sh arm64
-          
+
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
 
@@ -49,22 +47,25 @@ jobs:
            else
             echo "Unknown Mesa Build" > tmp_memo
            fi
-steps:
+    outputs:
+      shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}    
+    steps:
       - id: set_outputs
         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
-         
+
+
       - name: Build rootfs tarball
         run: |
-          # Mesa deb
-          chmod +x mesa-bootstrap.sh
-          sudo ./mesa-bootstrap.sh arm64
-          # Mesa build
-          #chmod +x u-bootstrap.sh
-          #sudo ./u-bootstrap.sh arm64
-          # ubuntu-image
-          #chmod +x ubuntu-image.sh
-          #sudo ./ubuntu-image.sh
-          # ここで rootfs.tar.xz などができる想定
+           # Mesa deb
+            chmod +x mesa-bootstrap.sh
+            sudo ./mesa-bootstrap.sh arm64
+            # Mesa build
+            #chmod +x u-bootstrap.sh
+            #sudo ./u-bootstrap.sh arm64
+            # ubuntu-image
+            #chmod +x ubuntu-image.sh
+            #sudo ./ubuntu-image.sh
+            # ここで rootfs.tar.xz などができる想定
 
       - name: Upload rootfs artifact
         uses: actions/upload-artifact@v4
@@ -73,32 +74,32 @@ steps:
           path: . # 作成されたファイルのパスを指定
 
   build:
-    needs: build_rootfs # rootfsが終わるまで待つ
-    name: Build for ${{ matrix.model }}
-    runs-on: ubuntu-24.04-arm
-    strategy:
-      fail-fast: false
-      matrix:
+      needs: build_rootfs # rootfsが終わるまで待つ
+      name: Build for ${{ matrix.model }}
+      runs-on: ubuntu-24.04-arm
+      strategy:
+       fail-fast: false
+       matrix:
         include:
-          - model: orangepi-5
-            defconfig: orangepi-5-rk3588s_defconfig
-            dtb: rk3588s-orangepi-5
-          - model: orangepi-5-plus
-            defconfig: orangepi-5-plus-rk3588_defconfig
-            dtb: rk3588-orangepi-5-plus
+         - model: orangepi-5
+           defconfig: orangepi-5-rk3588s_defconfig
+           dtb: rk3588s-orangepi-5
+         - model: orangepi-5-plus
+           defconfig: orangepi-5-plus-rk3588_defconfig
+           dtb: rk3588-orangepi-5-plus
 
-    steps:
+      steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: u-boot
-        # matrix から defconfig と suffix を取得して実行
+      # matrix から defconfig と suffix を取得して実行
         run: /bin/bash ./das-u-boot.sh ${{ matrix.defconfig }}
-
+        
       - name: Download rootfs artifact
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu.rootfs.tar.gz
-          path: ./
+           name: ubuntu.rootfs.tar.gz
+           path: ./
 
       - name: disk image
         run: |
@@ -138,7 +139,7 @@ steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         env: 
-         FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
         with:
           path: release-assets
           pattern: build-artifacts-*
@@ -153,7 +154,7 @@ steps:
           # 👇 ここでスクリプトから受け取った変数（RELEASE_MESA_INFO）を埋め込みます
           body: |
           steps:
-             ${{ needs.build_rootfs.outputs.shared_value }}
+                ${{ needs.build_rootfs.outputs.shared_value }}
           files: release-assets/**/*
           draft: false
           prerelease: false
