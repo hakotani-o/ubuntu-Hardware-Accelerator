@@ -38,22 +38,22 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cat rel.txt
           sudo apt-get update
           sudo apt-get install -y qemu-user-static debootstrap # 必要なものを列挙
 
-#      - name: Load Release Info from File
-      - id: set_outputs
+      - name: Load Release Info from File     
         run: |
            if [ -f rel.txt ]; then
-            cat rel.txt >> $GITHUB_OUTPUT
+            cat rel.txt > $tmp_memo
             rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
            else
-            echo "RELEASE_MESA_INFO=Unknown Mesa Build" >> $GITHUB_OUTPUT
+            echo "Unknown Mesa Build" > $tmp_memo
            fi
-
-      - name: Build rootfs tarball
-        run: |
+    steps:
+       - id: set_outputs
+         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
+       - name: Build rootfs tarball
+         run: |
           # Mesa deb
           chmod +x mesa-bootstrap.sh
           sudo ./mesa-bootstrap.sh arm64
