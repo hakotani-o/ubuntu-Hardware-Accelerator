@@ -19,7 +19,7 @@ permissions:
   contents: write  # これがリリース作成に必要
 
 jobs:
-build_rootfs:
+  build_rootfs:
     runs-on: ubuntu-24.04-arm
     outputs:
       shared_value: ${{ steps.set_output.outputs.RELEASE_MESA_INFO }}
@@ -70,7 +70,6 @@ build_rootfs:
         with:
           name: ubuntu.rootfs.tar.gz
           path: . # 作成されたファイルのパスを指定
-
 
   build:
     needs: build_rootfs # rootfsが終わるまで待つ
@@ -128,6 +127,7 @@ build_rootfs:
           name: build-artifacts-${{ matrix.model }}
           path: final_assets/
           retention-days: 1
+
   release:
     needs: [ build , build_rootfs ]
     runs-on: ubuntu-24.04-arm
