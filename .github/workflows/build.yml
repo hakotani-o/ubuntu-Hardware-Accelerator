@@ -28,10 +28,10 @@ jobs:
     # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
       - name: Run local build script
         env: 
-           MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
+           mesa_source: ${{ github.event.inputs.mesa_source }}
         run: |
-          chmod +x ./meas-build-env.sh
-          sudo ./meas-build-env.sh arm64
+          chmod +x ./meas-build-env.sh 
+          sudo ./meas-build-env.sh arm64 $mesa_source
 
       - name: kernel
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
@@ -49,7 +49,7 @@ jobs:
            else
             echo "Unknown Mesa Build" > tmp_memo
            fi
-      - id: set_outputs
+      - id: RELEASE_MESA_INFO
         run:  echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
 
 
