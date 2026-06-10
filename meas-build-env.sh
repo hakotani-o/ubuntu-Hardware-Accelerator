@@ -132,11 +132,12 @@ libclc-21-dev llvm-21-dev libllvmspirvlib-21-dev libclang-cpp21-dev libclang-21-
 #echo "--------------- build-dep -y mesa end  ----------------------"
 
 # デフォルト値を設定（未指定ならubuntu）
-MESA_SOURCE="${MESA_SOURCE:-ubuntu}"
+MESA_SOURCE="${mesa_source:-ubuntu}"
 
 
 
 echo "=== 1. Mesaソースコードの取得 ==="
+echo "mesa_source=$mesa_source"
 if [ "${MESA_SOURCE}" == "upstream" ]; then
     echo "freedesktop staging/26.0 から取得します..."
 	# mesa staging 26.0 version
