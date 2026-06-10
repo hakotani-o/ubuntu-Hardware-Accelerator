@@ -40,7 +40,7 @@ jobs:
         run: |
           if [ -f rel.txt ]; then
             cat rel.txt > tmp_memo
-            rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
+            #rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
           else
             echo "Unknown Mesa Build" > tmp_memo
           fi
