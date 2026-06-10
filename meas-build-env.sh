@@ -137,8 +137,8 @@ MESA_SOURCE="${mesa_source:-ubuntu}"
 
 
 echo "=== 1. Mesaソースコードの取得 ==="
-echo "mesa_source=$mesa_source"
-if [ "${MESA_SOURCE}" == "upstream" ]; then
+echo "mesa_source=$2"
+if [ "$2" == "upstream" ]; then
     echo "freedesktop staging/26.0 から取得します..."
 	# mesa staging 26.0 version
 	cp staging_panthor_mesa.sh libdrm-amdgpu1.symbols.patch $1 && chmod +x $1/staging_panthor_mesa.sh
