@@ -99,7 +99,9 @@ jobs:
           draft: false
           prerelease: false
           # ここに圧縮済みファイルのパスを指定します
-          files: ./Ubuntu-*img.xz ./*.bin
+          files: |
+            ./Ubuntu-*img.xz 
+            ./*.bin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
