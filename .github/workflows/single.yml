@@ -34,21 +34,7 @@ jobs:
           sudo ./meas-build-env.sh arm64
 
       - name: Build kernel package
-        run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
-
-      - name: Load Mesa Release Info from File     
-        run: |
-          if [ -f rel.txt ]; then
-            cat rel.txt > tmp_memo
-            #rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
-          else
-            echo "Unknown Mesa Build" > tmp_memo
-          fi
-          cat rel.txt
-
-      - name: Mesa version
-        id: mesa
-        run: echo "release_mesa_info=$tmp_memo" >> $GITHUB_OUTPUT
+        run: /bin/bash ./build-kernel.sh arm64
 
       - name: Build rootfs tarball
         run: |
@@ -85,6 +71,11 @@ jobs:
       - name: Get kernel version
         id: kernel
         run: cat kernel_version >> $GITHUB_OUTPUT
+
+      - name: Mesa version
+        id: mesa
+        run: echo "release_mesa_info=$(cat rel.txt)" >> $GITHUB_OUTPUT
+        
 
         # --- リリース直前にこれを追加 ---
       - name: Fix file permissions
