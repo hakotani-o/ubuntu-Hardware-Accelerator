@@ -19,7 +19,7 @@ env:
 
 jobs:
   command:
-    name: Mesa  for Rockchip build
+    name: Disk images with Mesa for Rockchip
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
