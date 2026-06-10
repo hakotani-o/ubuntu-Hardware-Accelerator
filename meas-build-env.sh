@@ -148,8 +148,8 @@ else
 	chroot $1 /build_panthor_mesa.sh
 fi
 cp $1/*.deb .
-cp $1/rel.txt .
-ls *.deb
+chown -R runner:runner $1/rel.txt && cp $1/rel.txt .
+ls *.deb *.txt
 teardown_mountpoint $chroot_dir
 if [ $mem_size -gt 10 ]; then
 	umount $chroot_dir
