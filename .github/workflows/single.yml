@@ -14,8 +14,8 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-#permissions:
-#  contents: write  # これがリリース作成に必要
+permissions:
+  contents: write  # これがリリース作成に必要
 
 jobs:
   command:
@@ -85,6 +85,11 @@ jobs:
         id: kernel
         run: cat kernel_version >> $GITHUB_OUTPUT
 
+        # --- リリース直前にこれを追加 ---
+      - name: Fix file permissions
+        run: sudo chown -R runner:runner ./
+        # ----------------------------
+      
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v2
         with:
