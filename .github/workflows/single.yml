@@ -19,13 +19,13 @@ env:
 
 jobs:
   command:
-  name: Mesa  for Rockchip build
+    name: Mesa  for Rockchip build
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-    # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
+# 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
       - name: Run local build script
         env: 
            MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
