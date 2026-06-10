@@ -26,17 +26,17 @@ jobs:
         uses: actions/checkout@v4
 
 # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
-      - name: Run local build script
+      - name: Build mesa package
         env: 
            MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
         run: |
           chmod +x ./meas-build-env.sh
           sudo ./meas-build-env.sh arm64
 
-      - name: kernel
+      - name: Build kernel package
         run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
 
-      - name: Load Release Info from File     
+      - name: Load Mesa Release Info from File     
         run: |
           if [ -f rel.txt ]; then
             cat rel.txt > tmp_memo
@@ -56,19 +56,19 @@ jobs:
             sudo ./mesa-bootstrap.sh arm64
             # ここで rootfs.tar.xz などができる想定
 
-      - name: u-boot orangepi-5
+      - name: Build u-boot for orangepi-5
         run: /bin/bash  ./das-u-boot.sh orangepi-5-rk3588s_defconfig
 
-      - name: disk image orangepi-5
+      - name: Build disk image for orangepi-5
         run:  |
             chmod +x disk_image.sh
             sudo  ./disk_image.sh arm64 orangepi-5 rk3588s-orangepi-5
             mv u-boot-rockchip.bin orangepi-5-u-boot-rockchip.bin
 
-      - name: u-boot orangepi-5-PLUS
+      - name: Build u-boot for orangepi-5-PLUS
         run: /bin/bash  ./das-u-boot.sh orangepi-5-plus-rk3588_defconfig
 
-      - name: disk image orangepi-5-PLUS
+      - name: Build disk image for orangepi-5-PLUS
         run:  |
             sudo  ./disk_image.sh arm64 orangepi-5-plus rk3588-orangepi-5-plus
             mv u-boot-rockchip.bin orangepi-5-PLUS-u-boot-rockchip.bin
@@ -90,7 +90,7 @@ jobs:
         with:
           # 実行するたびにユニークなタグ名（例: build-1, build-2...）を付けます
           tag_name: build-${{ github.run_number }}
-          name: "Orange Pi 5 Disk Image Build ${{ github.run_number }}"
+          name: "Orange Pi 5 / 5 PLUS Disk Image Build ${{ github.run_number }}"
           body: |
             Orange Pi 5 / 5 PLUS ディスクイメージ with Mesa for Rockchip
             ビルド日時: ${{ steps.date.outputs.now }}
