@@ -174,11 +174,11 @@ cat << 'EOF' > debian/mesa-vulkan-drivers.install
 README.rst usr/share/doc/mesa-common-dev/
 usr/lib/*/libvulkan_lvp.so
 usr/lib/*/libvulkan_panfrost.so
-usr/lib/*/libvulkan_panvk.so
 usr/share/vulkan/icd.d/lvp_icd.*.json
 usr/share/vulkan/icd.d/panfrost_icd.*.json
-usr/share/vulkan/icd.d/panvk_icd.*.json
 EOF
+# usr/lib/*/libvulkan_panvk.so
+# usr/share/vulkan/icd.d/panvk_icd.*.json
 
 echo "=== 4. パッケージバージョンの変更 (自動上書き防止) ==="
 # バージョン末尾に「~panthor1」を自動付与
