@@ -1,0 +1,107 @@
+name: v2-ubuntu-single-hardware-accelerator
+on:
+  workflow_dispatch:
+   inputs:
+      mesa_source:
+        description: 'Mesaのソースコードを選択'
+        required: true
+        default: 'upstream'
+        type: choice
+        options:
+          - upstream
+          - ubuntu
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+#permissions:
+#  contents: write  # これがリリース作成に必要
+
+jobs:
+  command:
+  name: Mesa  for Rockchip build
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+    # 2. ローカルと共通のBASHスクリプトを実行   Mesa deb
+      - name: Run local build script
+        env: 
+           MESA_SOURCE: ${{ github.event.inputs.mesa_source }}
+        run: |
+          chmod +x ./meas-build-env.sh
+          sudo ./meas-build-env.sh arm64
+
+      - name: kernel
+        run: /bin/bash ./build-kernel.sh arm64 2>&1|tee log1
+
+      - name: Load Release Info from File     
+        run: |
+          if [ -f rel.txt ]; then
+            cat rel.txt > tmp_memo
+            rm rel.txt  # 👈 変数に入れたら即座にファイルを消去してクリーンアップ！
+          else
+            echo "Unknown Mesa Build" > tmp_memo
+          fi
+
+      - name: Mesa version
+        id: mesa
+        run: echo "RELEASE_MESA_INFO=$tmp_memo" >> $GITHUB_OUTPUT
+
+      - name: Build rootfs tarball
+        run: |
+           # Mesa deb
+            chmod +x mesa-bootstrap.sh
+            sudo ./mesa-bootstrap.sh arm64
+            # ここで rootfs.tar.xz などができる想定
+
+      - name: u-boot orangepi-5
+        run: /bin/bash  ./das-u-boot.sh orangepi-5-rk3588s_defconfig
+
+      - name: disk image orangepi-5
+        run:  |
+            chmod +x disk_image.sh
+            sudo  ./disk_image.sh arm64 orangepi-5 rk3588s-orangepi-5
+            mv u-boot-rockchip.bin orangepi-5-u-boot-rockchip.bin
+
+      - name: u-boot orangepi-5-PLUS
+        run: /bin/bash  ./das-u-boot.sh orangepi-5-plus-rk3588_defconfig
+
+      - name: disk image orangepi-5-PLUS
+        run:  |
+            sudo  ./disk_image.sh arm64 orangepi-5-plus rk3588-orangepi-5-plus
+            mv u-boot-rockchip.bin orangepi-5-PLUS-u-boot-rockchip.bin
+
+            echo "============================"
+            ls -l
+            echo "============================="
+
+      - name: Get current date
+        id: date
+        run: echo "now=$(date +'%Y-%m-%d %H:%M')" >> $GITHUB_OUTPUT
+
+      - name: Get kernel version
+        id: kernel
+        run: cat kernel_version >> $GITHUB_OUTPUT
+
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v2
+        with:
+          # 実行するたびにユニークなタグ名（例: build-1, build-2...）を付けます
+          tag_name: build-${{ github.run_number }}
+          name: "Orange Pi 5 Disk Image Build ${{ github.run_number }}"
+          body: |
+            Orange Pi 5 / 5 PLUS ディスクイメージ with Mesa for Rockchip
+            ビルド日時: ${{ steps.date.outputs.now }}
+            ベースカーネル: ${{ steps.kernel.outputs.kernel_version }}
+            Mesa バージョン: ${{ steps.mesa.outputs.RELEASE_MESA_INFO }}
+          draft: false
+          prerelease: false
+          # ここに圧縮済みファイルのパスを指定します
+          files: ./Ubuntu-*img.xz ./*.bin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
