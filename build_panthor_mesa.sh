@@ -194,7 +194,8 @@ debuild -us -uc -b -d
 echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
 # echo "RELEASE_MESA_INFO=Ubuntu Mesa ${DETECTED_VERSION}" >> "$GITHUB_ENV"
-sudo echo "Ubuntu Mesa ${DETECTED_VERSION}" > /rel.txt
+# sudo echo "Ubuntu Mesa ${DETECTED_VERSION}" > /rel.txt
+sudo echo "Ubuntu Mesa \`${DETECTED_VERSION}\`" > /rel.txt
 cd ..
 cp *.deb /
 cd /
