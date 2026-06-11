@@ -189,7 +189,8 @@ debchange --force-bad-version --newversion "${CURRENT_VERSION}~panthor1" "Custom
 
 echo "=== 5. 依存チェックを無視してビルド実行 ==="
 # -d フラグで不要なビルド依存（Intel/AMD用ライブラリなど）のチェックをスキップ
-debuild -us -uc -b -d
+# ビルド情報の整理
+DEB_BUILD_OPTIONS="terse" debuild -us -uc -b -d
 
 echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
