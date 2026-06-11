@@ -197,6 +197,7 @@ echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
 # echo "RELEASE_MESA_INFO=Freedesktop Mesa ${DETECTED_VERSION}" >> "$GITHUB_ENV"
 sudo echo "Freedesktop Mesa ${DETECTED_VERSION}" > /rel.txt
+sudo echo "Freedesktop Mesa \`${DETECTED_VERSION}\`" > /rel.txt
 cd ..
 cp *.deb /
 cd /
