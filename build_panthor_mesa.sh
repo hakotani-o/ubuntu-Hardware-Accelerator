@@ -85,64 +85,7 @@ dch -b --newversion "26.0.3-1ubuntu1~panthor1" \
     --force-distribution \
     "Build for Panthor GPU support with optimization"
 
-
-### echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
-# gallium-drivers の行を置換 (panfrost,kmsro,zink,softpipe のみに制限)
-### sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe/' debian/rules
-# (既存のドライバー書き換え処理のあとに以下を追加してください)
-# 存在しないファイルでエラーになるのを防ぐため、rm に -f フラグを追加する
-###  sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/g' debian/rules
-###  sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/g' debian/rules
-# vdpauファイルが存在しない場合に mv コマンドでエラーになるのを防ぐパッチ
-#sed -i 's/mv debian\/tmp\/usr\/lib\/\*\/vdpau/if [ -d debian\/tmp\/usr\/lib\/\*\/vdpau ]; then mv debian\/tmp\/usr\/lib\/\*\/vdpau/g' debian/rules
-#sed -i 's/libvdpau\*.so\*/libvdpau\*.so\*; fi/g' debian/rules
-### echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
-# (前略：rm -f の2行は残したままでOKです)
-# 【★前回のvdpauの2行を消して、この1行に差し替えます★】
-# vdpauを移動させようとする処理（連続する3行）を、先頭に「#」をつけて丸ごと無効化します
-### sed -i '/install -m755 -d debian\/mesa-vdpau-drivers/,/debian\/mesa-vdpau-drivers\/usr\/lib/ s/^/#/' debian/rules
-# 【★今回新しく追加する1行★】
-# _drv_video.soを移動させようとする処理（連続する2行）を、先頭に「#」をつけて無効化します
-### sed -i '/install -m755 -d debian\/mesa-va-drivers/,/debian\/mesa-va-drivers\/usr\/lib/ s/^/#/' debian/rules
-# HAKO 01
-### sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
-### truncate -s 0 debian/mesa-drm-shim.install
-### truncate -s 0 debian/mesa-opencl-icd.install
-# 【★今回新しく追加する2行★】
-# Vulkanパッケージの指示書から、生成されなかったレイヤーファイルの記述を削除します
-### sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
-### sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
-# 【★今回新しく追加する1行★】
-# Vulkanパッケージの指示書から、explicit_layer の記述も削除します
-### sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
-# 【★今回新しく追加する1行★】
-# Vulkanパッケージの指示書から、AMD用の設定ファイルの記述を削除します
-### sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
-# 指示書から不要なファイルを確実に削除する4行（ここが揃っていればOKです）
-### sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
-### sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
-### sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
-### sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
-# 1. teflon パッケージの指示書を空っぽにします
-### truncate -s 0 debian/mesa-teflon-delegate.install
-# 2. Vulkanパッケージの指示書から、overlay-control の記述を削除します
-### sed -i '/mesa-overlay-control.py/d' debian/mesa-vulkan-drivers.install
-# HAKO 02
-### sed -i '/mesa-screenshot-control.py/d' debian/mesa-vulkan-drivers.install
-
-# vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
-# ※Mesaのバージョンにより指定名が panfrost か panvk か異なるため、ソースフォルダ名から自動判定
-### if [ -d "src/vulkan/drivers/panvk" ]; then
-###    VULKAN_DRIVER_NAME="panvk"
-### else
-###    VULKAN_DRIVER_NAME="panfrost"
-### fi
-### sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN_DRIVER_NAME},swrast/" debian/rules
-
-# LLVMを必須とする他のドライバー（iris, radeonsi等）を無効化したため、LLVM依存設定自体をオフにする
-### sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
-
-echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+echo "=== 1. debian/rules の書き換え (Panthor最適化) ==="
 # 1. ドライバーの絞り込み（これはそのまま残します。ビルドが爆速・軽量になります）
 sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe /' debian/rules
 if [ -d "src/vulkan/drivers/panvk" ]; then VULKAN="panvk"; else VULKAN="panfrost"; fi
@@ -153,13 +96,7 @@ sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
 # 指示書を「消す」のではなく、「ファイルがなくてもパッケージ作成を続行しろ」という魔
 # 法のフラグを debian/rules に注入します。
 # これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
-### sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
-echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
-# 2. 【★今回新しく追加する1行★】
-# Mesa 26特有の _drv_video.so 移動処理（連続する3行）を丸ごとコメントアウトします
-sed -i '/Copy the hardlinked va drivers correctly/,/debian\/mesa-libgallium\/usr\/lib/ s/^/#/' debian/rules
-sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
-
+sed -i 's/\bmv debian\/tmp\//-mv debian\/tmp\//' debian/rules
 
 echo "=== 3. debian/rules と指示書の書き換え (Panthor最適化) ==="
 # (前略：hakotaniさんが作ってくれた、先ほどの *_drv_video.so の mv コメントアウト行はそのまま残してください！)
