@@ -27,7 +27,7 @@ cd ..
 #cd libdrm-*/
 
 # 4. パッケージをビルドする（署名はスキップ）
-dpkg-buildpackage -us -uc -b
+DEB_BUILD_OPTIONS="noautodbgsym" dpkg-buildpackage -us -uc -b
 
 # 5. 1つ上のディレクトリに .deb ファイルが生成されるので、それをインストール
 cd ..
@@ -141,7 +141,7 @@ debchange --force-bad-version --newversion "${CURRENT_VERSION}+panthor1" "Custom
 echo "=== 5. 依存チェックを無視してビルド実行 ==="
 # -d フラグで不要なビルド依存（Intel/AMD用ライブラリなど）のチェックをスキップ
 # ビルド情報の整理
-DEB_BUILD_OPTIONS="terse" debuild -us -uc -b -d
+DEB_BUILD_OPTIONS="terse noautodbgsym" debuild -us -uc -b -d
 
 echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
