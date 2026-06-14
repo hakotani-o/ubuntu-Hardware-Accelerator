@@ -74,13 +74,13 @@ sudo ln -sf /usr/local/bin/meson /usr/bin/meson
 apt source mesa
 MESA_SRC_DIR=$(ls -d mesa-*)
 cd "$MESA_SRC_DIR"
-
+mesa_version=$( echo $MESA_SRC_DIR | sed 's/mesa-//' )
 ### === 【追加】debian/changelog の自動書き換え ===
 echo "=== 2.5. debian/changelog の自動書き換え (Panthorバージョン化) ==="
 # Ubuntu 26.04 (resolute) の場合を想定しています。お使いのバージョンに合わせて noble を変更してください。
 # エディタを開かずに、非対話で changelog の先頭にカスタムバージョンを追加します。
 DEBEMAIL="opi5plus@bcc.example.com" DEBFULLNAME="hakotani-o" \
-dch -b --newversion "26.0.3-1ubuntu1~panthor1" \
+dch -b --newversion "${mesa_version}-1ubuntu1~panthor1" \
     --distribution resolute \
     --force-distribution \
     "Build for Panthor GPU support with optimization"
