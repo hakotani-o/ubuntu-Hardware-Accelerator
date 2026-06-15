@@ -103,6 +103,8 @@ setup_mountpoint $chroot_dir
 
 chroot $1 apt-get update
 chroot $1 apt-get -y upgrade
+chroot $1 add-apt-repository ppa:mozillateam/ppa
+chroot $1 apt update
 chroot $1 apt-get -y dist-upgrade
 chroot $1 apt-get -y install ubuntu-desktop-minimal gdm3 linux-firmware snapd oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
 chroot $1 apt-get -y install  build-essential gcc-aarch64-linux-gnu bison \
