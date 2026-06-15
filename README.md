@@ -54,6 +54,33 @@ gst-inspect-1.0 v4l2codecs
 ```
 *`v4l2slh264dec`、`v4l2slh265dec`、`v4l2slav1dec` 等が表示されれば正常です。動画再生には GStreamer を直接叩く「Clapper」などのモダンなプレイヤーの利用を推奨します。*
 
+### 3. 🔥 Special Feature: Pure APT Native Browsing (Snap-free)
+このディスクイメージは、Orange Pi 5 / 5 Plus のハードウェアパワーを極限まで引き
+出すため、**完全にSnapを排除したクリーンな設計**を採用しています。
+
+初期状態でのディスク容量（イメージサイズ）を最小限に抑えつつ、ユーザーがいつでも
+「本物のAPTネイティブ版」の Firefox および Thunderbird を導入できるよう、**Mozil
+la Team PPA の事前マッピング（APT Pinning）**をあらかじめシステムに組み込んであ
+ります。
+
+これにより、Ubuntu公式の「Snap強制ダミーパッケージ」に邪魔されることなく、超軽量
+・高速なブラウジング環境をワンコマンドで手に入れることができます。
+### 🚀 How to Install Native Firefox & Thunderbird
+
+イメージ起動後、ターミナルで以下のコマンドを実行するだけで、PPAからネイティブパ
+ッケージ（APT版）が直接インストールされます。
+
+```bash
+sudo apt update
+sudo apt install firefox-esr thunderbird-gnome-support
+```
+
+*   **No Snap Overhead**: 起動が遅い、メモリを無駄に消費するSnapデーモンは一切動
+きません。
+*   **Hardware Accelerator Friendly**: SBCのリソースを最大限に活かした、軽快なパ
+フォーマンスを体感してください。
+
+
 ## 🛠️ 開発者について (Authors)
 
 本プロジェクトは、人間のエンジニアの構想力とAIの技術的サポートが融合した「AI共同開発（AI Co-Development）」によって誕生しました。
