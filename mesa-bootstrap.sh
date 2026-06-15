@@ -121,6 +121,7 @@ setup_mountpoint $chroot_dir
 
 chroot $1 apt-get update
 chroot $1 apt-get -y upgrade
+chroot $1 apt-get install -y software-properties-common
 chroot $1 add-apt-repository ppa:mozillateam/ppa
 chroot $1 apt update
 chroot $1 apt-get -y dist-upgrade
