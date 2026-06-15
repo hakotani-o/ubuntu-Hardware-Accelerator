@@ -98,6 +98,24 @@ echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg"
 } > $1/etc/apt/sources.list.d/ubuntu.sources
 rm -f $1/etc/apt/sources.list
 
+{
+echo "Package: firefox*"
+echo "Pin: release o=LP-PPA-mozillateam"
+echo "Pin-Priority: 1001"
+echo ""
+echo "Package: firefox*"
+echo "Pin: release o=Ubuntu"
+echo "Pin-Priority: -1"
+echo ""
+echo "Package: thunderbird*"
+echo "Pin: release o=LP-PPA-mozillateam"
+echo "Pin-Priority: 1001"
+echo ""
+echo "Package: thunderbird*"
+echo "Pin: release o=Ubuntu"
+echo "Pin-Priority: -1"
+} > $1/etc/apt/preferences.d/mozillateam-ppa
+
 #setup custom packages
 setup_mountpoint $chroot_dir
 
@@ -106,7 +124,7 @@ chroot $1 apt-get -y upgrade
 chroot $1 add-apt-repository ppa:mozillateam/ppa
 chroot $1 apt update
 chroot $1 apt-get -y dist-upgrade
-chroot $1 apt-get -y install ubuntu-desktop-minimal gdm3 linux-firmware snapd oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
+chroot $1 apt-get -y install ubuntu-desktop-minimal gdm3 linux-firmware　oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
 chroot $1 apt-get -y install  build-essential gcc-aarch64-linux-gnu bison \
 qemu-user-binfmt qemu-system-arm qemu-efi-aarch64 binfmt-support \
 debootstrap flex libssl-dev bc rsync kmod cpio xz-utils fakeroot parted \
