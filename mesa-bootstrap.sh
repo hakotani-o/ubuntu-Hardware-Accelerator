@@ -116,6 +116,20 @@ echo "Pin: release o=Ubuntu"
 echo "Pin-Priority: -1"
 } > $1/etc/apt/preferences.d/mozillateam-ppa
 
+{
+echo 'Package: *'
+echo 'Pin: release o=LP-PPA-xtradeb-apps'
+echo 'Pin-Priority: 100'
+echo ''
+echo 'Package: chromium*'
+echo 'Pin: release o=LP-PPA-xtradeb-apps'
+echo 'Pin-Priority: 700'
+echo ''
+echo 'Package: chromium-browser'
+echo 'Pin: release *'
+echo 'Pin-Priority: -1'
+} > $1/etc/apt/preferences.d/xtradeb-chromium-ppa
+
 #setup custom packages
 setup_mountpoint $chroot_dir
 
@@ -123,6 +137,7 @@ chroot $1 apt-get update
 chroot $1 apt-get -y upgrade
 chroot $1 apt-get install -y software-properties-common
 chroot $1 add-apt-repository -y ppa:mozillateam/ppa
+chroot $1 add-apt-repository -y ppa:xtradeb/apps 
 chroot $1 apt update
 chroot $1 apt-get -y dist-upgrade
 chroot $1 apt-get -y install ubuntu-desktop-minimal gdm3 linux-firmware oem-config-gtk ubiquity-frontend-gtk ubiquity-slideshow-ubuntu yaru-theme-unity yaru-theme-icon yaru-theme-gtk aptdaemon initramfs-tools vim
@@ -225,6 +240,11 @@ chroot $1 ssh-keygen -A
 # debug
 echo "linux-version"
 chroot $1 linux-version list
+
+# chromium
+mkdir -p $1/etc/chromium.d/
+echo 'export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --enable-features=AcceleratedVideoDecoder,V4l2VideoDecode --disable-features=UseChromeOSDirectVideoDecoder"' > $1/etc/chromium.d/opi5-v4l2
+
 
 chroot $1 apt-get  clean
 chroot $1 apt-get -y autoremove
