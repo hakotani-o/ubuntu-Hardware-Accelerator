@@ -134,10 +134,10 @@ echo "# <file system>     <mount point>  <type>  <options>   <dump>  <fsck>" > $
 echo "UUID=${root_uuid,,} /              ext4    defaults,noatime,errors=remount-ro    0       1" >> ${mount_point}/writable/etc/fstab
 
 # Write bootloader to disk image
-if [ -f "u-boot-rockchip.bin" ]; then
-    dd if="u-boot-rockchip.bin" of="${loop}" seek=1 bs=32k conv=fsync
+if [ -f "./u-boot-rockchip.bin" ]; then
+    dd if="./u-boot-rockchip.bin" of="${loop}" seek=1 bs=32k conv=fsync
 else
-	echo "/u-boot-rockchip.bin not found"
+	echo "./u-boot-rockchip.bin not found"
 	exit 1
 fi
 
@@ -145,14 +145,14 @@ echo U_BOOT_FDT='"'"$fdt_name"'"' >> ${mount_point}/writable/etc/default/u-boot
 echo U_BOOT_FDT_DIR='"'"$dtbs_install_path"'"' >> ${mount_point}/writable/etc/default/u-boot
 #echo U_BOOT_FDT_OVERLAYS_DIR='"/usr/lib/linux-image-"' >> ${mount_point}/writable/etc/default/u-boot
 
-# ==================== ★【確定版】自作自動拡張サービスをchroot内に仕込む ====================
-echo "仕込み中: Ubuntu 26.04 用自動拡張サービス"
+# ==================== ★【確定版・kdump自動修正入り】自作自動拡張サービスをchroot内に仕込む ====================
+echo "仕込み中: Ubuntu 26.04 用自動拡張・kdump自動修正サービス"
 chroot ${mount_point}/writable/ /bin/bash -c "
 # 1. まずAPTリポジトリを更新し、正しいパッケージ名（e2fsprogs）でインストール
 # apt-get update
 # apt-get install -y cloud-guest-utils e2fsprogs
 
-# 2. 自動拡張スクリプト本体の作成
+# 2. 自動拡張 ＆ kdump再設定スクリプト本体の作成
 cat << 'EOF' > /usr/local/bin/firstboot-growroot.sh
 #!/bin/bash
 # ログファイルに出力をすべてリダイレクト
@@ -184,6 +184,16 @@ resize2fs \"\${ROOT_DEV}\"
 
 echo \"=== RootFS Auto Grow Completed ===\"
 
+echo \"=== Starting kdump-tools post-configuration ===\"
+# ★【追加】ビルド時に外したkdump-toolsフックの実行権限を元に戻す
+if [ -f /etc/kernel/postinst.d/kdump-tools ]; then
+    chmod +x /etc/kernel/postinst.d/kdump-tools
+fi
+
+# ★【追加】非対話モードでkdump-toolsの再設定（initramfsの正しい生成）を実行
+DEBIAN_FRONTEND=noninteractive dpkg-reconfigure kdump-tools
+echo \"=== kdump-tools post-configuration Completed ===\"
+
 # 自身を無効化して次回から動かさない（自爆）
 systemctl disable firstboot-growroot.service
 EOF
@@ -194,7 +204,7 @@ chmod +x /usr/local/bin/firstboot-growroot.sh
 # 3. systemd サービスファイルの作成
 cat << 'EOF' > /etc/systemd/system/firstboot-growroot.service
 [Unit]
-Description=First Boot Root Partition Resizer
+Description=First Boot Root Partition Resizer and kdump fixer
 After=local-fs.target
 Before=multi-user.target
 
@@ -245,9 +255,10 @@ losetup -d "${loop}"
 
 # Exit trap is no longer needed
 trap '' EXIT
-
-echo -e "\nCompressing $(basename "${img}.xz")\n"
-xz -v -9 -T0 "${img}"
+mkdir -p images
+mv ${img} images
+#echo -e "\nCompressing $(basename "${img}.xz")\n"
+#xz -v -9 -T0 "${img}"
 #rm "${img}"
 #cd ./images && sha256sum "$(basename "${img}.xz")" > "$(basename "${img}.xz.sha256")"
 exit 0

@@ -54,7 +54,7 @@ sudo apt-get install -y build-essential devscripts debhelper ninja-build \
     libxcb-shm0-dev libxcb-dri2-0-dev libxcb-dri3-dev libxshmfence-dev \
     libxrandr-dev libxxf86vm-dev libexpat1-dev libzstd-dev zlib1g-dev \
     python3-ply python3-yaml python3-pip python3-setuptools glslang-tools \
-    spirv-tools libclc-21-dev llvm-21-dev libclang-cpp21-dev \
+    spirv-tools libclc-21-dev llvm-21-dev libclang-cpp21-dev spirv-tools-dev \
     libllvmspirvlib-21-dev libclang-21-dev libwayland-egl-backend-dev \
     libxcb-randr0-dev  libdrm-dev libpciaccess-dev libffi-dev libsensors-dev libxml2-dev \
   libx11-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-glx0-dev \
@@ -62,7 +62,7 @@ sudo apt-get install -y build-essential devscripts debhelper ninja-build \
   libxdmcp-dev libxext-dev libxrandr-dev libxrender-dev libxshmfence-dev libxxf86vm-dev \
   libwayland-dev libwayland-bin libwayland-egl-backend-dev wayland-protocols \
   libglvnd-core-dev libvulkan-dev glslang-tools python3-pycparser
-  #libarchive-devmeson
+  #libarchive-dev
 
 
 # 2. apt版の古いmesonが入っていれば削除し、pipで最新版のmesonをシステムに導入します
@@ -96,21 +96,72 @@ dch -b --newversion "${mesa_version}-1ubuntu1~panthor1" \
     "Build for Panthor GPU support with optimization"
 
 
-### echo "=== 1. debian/rules の書き換え (Panthor最適化) ==="
-# 1. 【★ここが最大のポイント★】
-# 指示書を「消す」のではなく、「ファイルがなくてもパッケージ作成を続行しろ」という魔
-# 法のフラグを debian/rules に注入します。
-# これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
-sed -i 's/\bmv debian\/tmp\//-mv debian\/tmp\//' debian/rules
-
+### echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+# gallium-drivers の行を置換 (panfrost,kmsro,zink,softpipe のみに制限)
+### sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe/' debian/rules
+# (既存のドライバー書き換え処理のあとに以下を追加してください)
+# 存在しないファイルでエラーになるのを防ぐため、rm に -f フラグを追加する
+###  sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libEGL_mesa.so/g' debian/rules
+###  sed -i 's/rm debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/rm -f debian\/tmp\/usr\/lib\/\*\/libGLX_mesa.so/g' debian/rules
+# vdpauファイルが存在しない場合に mv コマンドでエラーになるのを防ぐパッチ
+#sed -i 's/mv debian\/tmp\/usr\/lib\/\*\/vdpau/if [ -d debian\/tmp\/usr\/lib\/\*\/vdpau ]; then mv debian\/tmp\/usr\/lib\/\*\/vdpau/g' debian/rules
+#sed -i 's/libvdpau\*.so\*/libvdpau\*.so\*; fi/g' debian/rules
+### echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+# (前略：rm -f の2行は残したままでOKです)
+# 【★前回のvdpauの2行を消して、この1行に差し替えます★】
+# vdpauを移動させようとする処理（連続する3行）を、先頭に「#」をつけて丸ごと無効化します
+### sed -i '/install -m755 -d debian\/mesa-vdpau-drivers/,/debian\/mesa-vdpau-drivers\/usr\/lib/ s/^/#/' debian/rules
+# 【★今回新しく追加する1行★】
+# _drv_video.soを移動させようとする処理（連続する2行）を、先頭に「#」をつけて無効化します
+### sed -i '/install -m755 -d debian\/mesa-va-drivers/,/debian\/mesa-va-drivers\/usr\/lib/ s/^/#/' debian/rules
+# HAKO 01
+### sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
+### truncate -s 0 debian/mesa-drm-shim.install
+### truncate -s 0 debian/mesa-opencl-icd.install
+# 【★今回新しく追加する2行★】
+# Vulkanパッケージの指示書から、生成されなかったレイヤーファイルの記述を削除します
+### sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
+### sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
+# 【★今回新しく追加する1行★】
+# Vulkanパッケージの指示書から、explicit_layer の記述も削除します
+### sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
+# 【★今回新しく追加する1行★】
+# Vulkanパッケージの指示書から、AMD用の設定ファイルの記述を削除します
+### sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
+# 指示書から不要なファイルを確実に削除する4行（ここが揃っていればOKです）
+### sed -i '/libVkLayer_/d' debian/mesa-vulkan-drivers.install
+### sed -i '/implicit_layer.d/d' debian/mesa-vulkan-drivers.install
+### sed -i '/explicit_layer.d/d' debian/mesa-vulkan-drivers.install
+### sed -i '/00-radv-defaults.conf/d' debian/mesa-vulkan-drivers.install
+# 1. teflon パッケージの指示書を空っぽにします
+### truncate -s 0 debian/mesa-teflon-delegate.install
+# 2. Vulkanパッケージの指示書から、overlay-control の記述を削除します
+### sed -i '/mesa-overlay-control.py/d' debian/mesa-vulkan-drivers.install
+# HAKO 02
+### sed -i '/mesa-screenshot-control.py/d' debian/mesa-vulkan-drivers.install
 
 # vulkan-drivers の行を置換 (panfrost,swrast のみに制限)
-echo "=== 2. debian/rules の書き換え (Panthor最適化) ==="
+echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
 # 1. ドライバーの絞り込み（これはそのまま残します。ビルドが爆速・軽量になります）
 sed -i 's/-Dgallium-drivers=.*/-Dgallium-drivers=panfrost,kmsro,zink,softpipe /' debian/rules
 if [ -d "src/vulkan/drivers/panvk" ]; then VULKAN="panvk"; else VULKAN="panfrost"; fi
 sed -i "s/-Dvulkan-drivers=.*/-Dvulkan-drivers=${VULKAN},swrast /" debian/rules
 sed -i 's/-Dllvm=enabled/-Dllvm=disabled/g' debian/rules
+
+# 2. 【★ここが最大のポイント★】
+# 指示書を「消す」のではなく、「ファイルがなくてもパッケージ作成を続行しろ」という魔
+# 法のフラグを debian/rules に注入します。
+# これにより、中身が空っぽの「他社用.deb」が自動的に生成されるようになります！
+### sed -i 's/dh_install/dh_install --missing-ok/g' debian/rules
+echo "=== 3. debian/rules の書き換え (Panthor最適化) ==="
+# 2. 【★今回新しく追加する1行★】
+# Mesa 26特有の _drv_video.so 移動処理（連続する3行）を丸ごとコメントアウトします
+sed -i '/Copy the hardlinked va drivers correctly/,/debian\/mesa-libgallium\/usr\/lib/ s/^/#/' debian/rules
+sed -i '/mv debian\/tmp\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri\/\*_drv_video.so/,/debian\/mesa-libgallium\/usr\/lib\/\${DEB_HOST_MULTIARCH}\/dri/ s/^/#/' debian/rules
+
+
+echo "=== 3. debian/rules と指示書の書き換え (Panthor最適化) ==="
+# (前略：hakotaniさんが作ってくれた、先ほどの *_drv_video.so の mv コメントアウト行はそのまま残してください！)
 
 # 【★これを追加★】エラーの原因になる他社用パッケージの指示書を、絶対に存在する「空のディレクトリ」の指定に書き換えます
 # これにより、中身は空っぽでも「有効な.debファイル」が100%安全に生成されるようになります
@@ -140,21 +191,18 @@ debchange --force-bad-version --newversion "${CURRENT_VERSION}+panthor1" "Custom
 
 echo "=== 5. 依存チェックを無視してビルド実行 ==="
 # -d フラグで不要なビルド依存（Intel/AMD用ライブラリなど）のチェックをスキップ
-# ビルド情報の整理
 DEB_BUILD_OPTIONS="terse noautodbgsym" debuild -us -uc -b -d
 
 echo "=== 6. ビルド完了 ==="
 DETECTED_VERSION=$(dpkg-parsechangelog -S Version)
-# echo "RELEASE_MESA_INFO=Freedesktop Mesa ${DETECTED_VERSION}" >> "$GITHUB_ENV"
-sudo echo "Freedesktop Mesa ${DETECTED_VERSION}" > /rel.txt
-sudo echo "Freedesktop Mesa \`${DETECTED_VERSION}\`" > /rel.txt
+echo "Freedesktop Mesa ${DETECTED_VERSION}" > /rel.txt
 cd ..
 cp *.deb /
 cd /
 echo "以下のディレクトリにPanthor専用の .deb パッケージが生成されました:"
 echo "=========== MESA-DEB ========"
 pwd
-ls -l *.deb *.txt
+ls -l *.deb
 
 echo "---------------------- MESA ----------------------------"
 echo "インストールする場合は、以下のコマンドを実行してください："
