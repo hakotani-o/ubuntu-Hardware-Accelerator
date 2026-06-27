@@ -84,6 +84,7 @@ cp -r $MESA_SRC_DIR/debian ./
 rm -rf  "$MESA_SRC_DIR"
 mesa_version="$(cat VERSION)"
 echo "mesa_version=$mesa_version"
+echo "$mesa_version" > rel.txt
 
 ### === 【追加】debian/changelog の自動書き換え ===
 echo "=== 2.5. debian/changelog の自動書き換え (Panthorバージョン化) ==="
