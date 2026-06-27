@@ -75,7 +75,6 @@ sudo apt-get install -y build-essential devscripts debhelper ninja-build \
 apt source mesa
 MESA_SRC_DIR=$(ls -d mesa-*)
 mesa_version=$( echo $MESA_SRC_DIR | sed 's/mesa-//' )
-echo "$mesa_version" > rel.txt
 cd "$MESA_SRC_DIR"
 
 ### === 【追加】debian/changelog の自動書き換え ===
