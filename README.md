@@ -59,20 +59,20 @@ gst-inspect-1.0 v4l2codecs
 出すため、**完全にSnapを排除したクリーンな設計**を採用しています。
 
 初期状態でのディスク容量（イメージサイズ）を最小限に抑えつつ、ユーザーがいつでも
-「本物のAPTネイティブ版」の Firefox および Thunderbird を導入できるよう、**Mozil
-la Team PPA の事前マッピング（APT Pinning）**をあらかじめシステムに組み込んであ
+「本物のAPTネイティブ版」の Firefox, Thunderbird および chromium を導入できるよう、**Mozil
+la Team PPA と xtradeb packaging team PPA の事前マッピング（APT Pinning）**をあらかじめシステムに組み込んであ
 ります。
 
 これにより、Ubuntu公式の「Snap強制ダミーパッケージ」に邪魔されることなく、超軽量
 ・高速なブラウジング環境をワンコマンドで手に入れることができます。
-### 🚀 How to Install Native Firefox & Thunderbird
+### 🚀 How to Install Native Firefox & Thunderbird & Chromium
 
 イメージ起動後、ターミナルで以下のコマンドを実行するだけで、PPAからネイティブパ
 ッケージ（APT版）が直接インストールされます。
 
 ```bash
 sudo apt update
-sudo apt install firefox-esr thunderbird-gnome-support
+sudo apt install firefox-esr thunderbird-gnome-support chromium
 ```
 
 *   **No Snap Overhead**: 起動が遅い、メモリを無駄に消費するSnapデーモンは一切動
