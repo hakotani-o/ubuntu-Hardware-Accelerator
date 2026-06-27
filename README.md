@@ -60,8 +60,9 @@ gst-inspect-1.0 v4l2codecs
 
 初期状態でのディスク容量（イメージサイズ）を最小限に抑えつつ、ユーザーがいつでも
 「本物のAPTネイティブ版」の Firefox, Thunderbird および chromium を導入できるよう、**Mozil
-la Team PPA と xtradeb packaging team PPA の事前マッピング（APT Pinning）**をあらかじめシステムに組み込んであ
+la Team PPA と xtradeb packaging team PPA の事前マッピング（APT Pinning** をあらかじめシステムに組み込んであ
 ります。
+「Chrome ウェブストア - 拡張機能」から **enhanced-h264ify** を組み込むことで簡単に **ハードウェアデコード** が体験できます。
 
 これにより、Ubuntu公式の「Snap強制ダミーパッケージ」に邪魔されることなく、超軽量
 ・高速なブラウジング環境をワンコマンドで手に入れることができます。
