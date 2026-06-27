@@ -99,7 +99,7 @@ else
 	cp build_panthor_mesa.sh $1 && chmod +x $1/build_panthor_mesa.sh
 systemd-nspawn -D $1 --resolv-conf=replace-host -E DEBIAN_FRONTEND=noninteractive --as-pid2 /build_panthor_mesa.sh
 fi
-cp $1/*.deb .
+cp $1/*.deb $1/rel.txt .
 ls ./*.deb
 
 if [ $mem_size -gt 13 ]; then
