@@ -29,7 +29,7 @@ fi
 suite=resolute
 #Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
 Uri="http://ports.ubuntu.com/ubuntu-ports"
-	debootstrap --arch=arm64 $suite arm64 $Uri
+	debootstrap --arch=arm64 $suite $1 $Uri
 
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
