@@ -66,7 +66,6 @@ rm -f $1/etc/apt/sources.list
 
 echo "\n##################	systemd-nspawn	START	#######################\n"
 
-systemd-nspawn -D $1 --resolv-conf=replace-host -E DEBIAN_FRONTEND=noninteractive --as-pid2 apt-get clean
 systemd-nspawn -D $1 --resolv-conf=replace-host -E DEBIAN_FRONTEND=noninteractive --as-pid2 apt-get update
 systemd-nspawn -D $1 --resolv-conf=replace-host -E DEBIAN_FRONTEND=noninteractive --as-pid2 apt-get -y upgrade
 systemd-nspawn -D $1 --resolv-conf=replace-host -E DEBIAN_FRONTEND=noninteractive --as-pid2 apt-get -y dist-upgrade
