@@ -145,6 +145,14 @@ echo U_BOOT_FDT='"'"$fdt_name"'"' >> ${mount_point}/writable/etc/default/u-boot
 echo U_BOOT_FDT_DIR='"'"$dtbs_install_path"'"' >> ${mount_point}/writable/etc/default/u-boot
 #echo U_BOOT_FDT_OVERLAYS_DIR='"/usr/lib/linux-image-"' >> ${mount_point}/writable/etc/default/u-boot
 
+mountpoint="${mount_point}/writable"
+
+mount dev-live -t devtmpfs "$mountpoint/dev"
+mount devpts-live -t devpts -o nodev,nosuid "$mountpoint/dev/pts"
+mount proc-live -t proc "$mountpoint/proc"
+mount sysfs-live -t sysfs "$mountpoint/sys"
+mount securityfs -t securityfs "$mountpoint/sys/kernel/security"
+
 # ==================== ★【確定版・kdump自動修正入り】自作自動拡張サービスをchroot内に仕込む ====================
 echo "仕込み中: Ubuntu 26.04 用自動拡張・kdump自動修正サービス"
 chroot ${mount_point}/writable/ /bin/bash -c "
@@ -221,6 +229,13 @@ EOF
 systemctl enable firstboot-growroot.service
 "
 # ====================================================================================
+
+umount "$mountpoint/sys/kernel/security"
+umount "$mountpoint/sys"
+umount "$mountpoint/proc"
+umount "$mountpoint/dev/pts"
+umount "$mountpoint/dev"
+umount "$mountpoint"
 
 
 echo "---------------Check the u-boot settings.----------------"
