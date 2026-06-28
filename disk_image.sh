@@ -230,20 +230,20 @@ systemctl enable firstboot-growroot.service
 "
 # ====================================================================================
 
-umount "$mountpoint/sys/kernel/security"
-umount "$mountpoint/sys"
-umount "$mountpoint/proc"
-umount "$mountpoint/dev/pts"
-umount "$mountpoint/dev"
 
+# u-boot-update 
+chroot ${mount_point}/writable/ /bin/bash -c "u-boot-update&&sync"
 
 echo "---------------Check the u-boot settings.----------------"
 cat ${mount_point}/writable/etc/default/u-boot
 echo "----------------------------------------------------------"
 
-# u-boot-update 
-systemd-nspawn -D ${mount_point}/writable/ --resolv-conf=replace-host --as-pid2  -E DEBIAN_FRONTEND=noninteractive /bin/bash -c "u-boot-update&&sync"
 
+umount "$mountpoint/sys/kernel/security"
+umount "$mountpoint/sys"
+umount "$mountpoint/proc"
+umount "$mountpoint/dev/pts"
+umount "$mountpoint/dev"
 umount "$mountpoint"
 
 sync --file-system
