@@ -27,8 +27,8 @@ rm -f wget-log* kernel_version
 #suite=plucky
 suite=resolute
 #Uri="https://mirror.hashy0917.net/ubuntu-ports/"
-Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
-#Uri="http://ports.ubuntu.com/ubuntu-ports"
+#Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
+Uri="http://ports.ubuntu.com/ubuntu-ports"
 	debootstrap --arch=arm64 $suite arm64 $Uri
 
 export DEBIAN_FRONTEND=noninteractive
