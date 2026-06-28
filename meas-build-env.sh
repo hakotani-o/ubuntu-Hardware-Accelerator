@@ -27,8 +27,8 @@ if [ $mem_size -gt 13 ]; then
 fi
 #suite=plucky
 suite=resolute
-Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
-#Uri="http://ports.ubuntu.com/ubuntu-ports"
+#Uri="http://ftp.udx.icscoe.jp/Linux/ubuntu-ports/"
+Uri="http://ports.ubuntu.com/ubuntu-ports"
 	debootstrap --arch=arm64 $suite arm64 $Uri
 
 export DEBIAN_FRONTEND=noninteractive
