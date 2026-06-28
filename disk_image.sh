@@ -235,7 +235,6 @@ umount "$mountpoint/sys"
 umount "$mountpoint/proc"
 umount "$mountpoint/dev/pts"
 umount "$mountpoint/dev"
-umount "$mountpoint"
 
 
 echo "---------------Check the u-boot settings.----------------"
@@ -244,6 +243,8 @@ echo "----------------------------------------------------------"
 
 # u-boot-update 
 systemd-nspawn -D ${mount_point}/writable/ --resolv-conf=replace-host --as-pid2  -E DEBIAN_FRONTEND=noninteractive /bin/bash -c "u-boot-update&&sync"
+
+umount "$mountpoint"
 
 sync --file-system
 sync
