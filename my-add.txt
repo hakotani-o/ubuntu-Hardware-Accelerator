@@ -98,14 +98,14 @@ CONFIG_HZ_300=y
 # デフォルトは `conservative`（バランス重視）です。
 # 用途に応じて変更できます：
 
-# - **3D/ゲーム重視**: `ondemand`
+# - **3D/ゲーム重視**: `ondemand`（デフォルト）
 # - **動画再生/省電力重視**: `schedutil`
-# - **バランス**: `conservative`（デフォルト）
+# - **バランス**: `conservative`
 # デスクトップ向け：ondemand よりも schedutil が応答性◎
 # ただし既存設定を踏襲する場合は ondemand のまま
 CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL=n
-CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=n
-CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE=y
+CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE=n
 
 # XEN不要
 CONFIG_XEN=n
