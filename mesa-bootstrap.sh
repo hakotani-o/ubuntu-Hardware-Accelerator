@@ -163,7 +163,7 @@ mkdir -p $1/usr/share/u-boot-menu/conf.d
 cat << 'EOF' > $1/usr/share/u-boot-menu/conf.d/ubuntu.conf
 U_BOOT_UPDATE="true"
 U_BOOT_PROMPT="1"
-U_BOOT_PARAMETERS="$(cat $1/etc/kernel/cmdline)"
+U_BOOT_PARAMETERS="$(cat /etc/kernel/cmdline)"
 U_BOOT_TIMEOUT="20"
 EOF
 
